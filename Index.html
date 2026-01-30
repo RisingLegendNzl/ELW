@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Element Landscaping Waikato - Professional landscaping and outdoor solutions in the Waikato region. Quality workmanship, reliable service.">
+    <meta name="keywords" content="landscaping, Waikato, lawn mowing, garden design, retaining walls, paving, hedge trimming">
+    <title>Element Landscaping Waikato | Professional Landscaping Services</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-forest: #1a3c34;
+            --color-forest-light: #2d5a4f;
+            --color-sage: #6b8f71;
+            --color-charcoal: #1f1f1f;
+            --color-charcoal-light: #2c2c2c;
+            --color-cream: #f5f2ec;
+            --color-cream-dark: #e8e4dc;
+            --color-white: #faf9f7;
+            --color-accent: #c4a962;
+            
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-cream);
+            color: var(--color-charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* ==================== LOADING ANIMATION ==================== */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--color-forest);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s var(--transition-smooth), visibility 0.6s;
+        }
+        
+        .loader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .logo-animation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--color-cream);
+            font-size: clamp(2rem, 5vw, 4rem);
+            letter-spacing: 0.1em;
+            position: relative;
+        }
+        
+        .logo-letter {
+            display: inline-block;
+            opacity: 1;
+            transition: transform 1.5s var(--transition-smooth), 
+                        letter-spacing 1.5s var(--transition-smooth);
+        }
+        
+        .logo-hidden {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.8s var(--transition-smooth),
+                        transform 0.8s var(--transition-smooth);
+        }
+        
+        .logo-animation.expanded .logo-hidden {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .word-element, .word-landscaping, .word-waikato {
+            display: inline-flex;
+            white-space: nowrap;
+        }
+        
+        .word-landscaping, .word-waikato {
+            margin-left: 0.3em;
+        }
+        
+        /* ==================== HEADER ==================== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            background: transparent;
+            transition: background 0.3s, padding 0.3s, box-shadow 0.3s;
+        }
+        
+        .header.scrolled {
+            background: rgba(250, 249, 247, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 2rem;
+            box-shadow: 0 2px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-cream);
+            text-decoration: none;
+            letter-spacing: 0.15em;
+            transition: color 0.3s;
+        }
+        
+        .header.scrolled .header-logo {
+            color: var(--color-forest);
+        }
+        
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: var(--color-cream);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: color 0.3s, opacity 0.3s;
+            opacity: 0.9;
+        }
+        
+        .nav-link:hover {
+            opacity: 1;
+        }
+        
+        .header.scrolled .nav-link {
+            color: var(--color-charcoal);
+        }
+        
+        .instagram-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-cream);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+        
+        .instagram-link:hover {
+            transform: scale(1.05);
+        }
+        
+        .header.scrolled .instagram-link {
+            color: var(--color-forest);
+        }
+        
+        .instagram-link svg {
+            width: 22px;
+            height: 22px;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--color-cream);
+            margin: 5px 0;
+            transition: background 0.3s, transform 0.3s;
+        }
+        
+        .header.scrolled .mobile-menu-btn span {
+            background: var(--color-charcoal);
+        }
+        
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(165deg, var(--color-forest) 0%, var(--color-forest-light) 50%, var(--color-sage) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 600;
+            color: var(--color-cream);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s var(--transition-smooth) 2.5s forwards;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--color-cream);
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s var(--transition-smooth) 2.7s forwards;
+        }
+        
+        .services-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            opacity: 0;
+            animation: fadeInUp 1s var(--transition-smooth) 2.9s forwards;
+        }
+        
+        .service-tag {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--color-cream);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transition: background 0.3s, transform 0.3s, border-color 0.3s;
+        }
+        
+        .service-tag:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .service-tag.visible {
+            animation: tagPopIn 0.6s var(--transition-bounce) forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes tagPopIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-cream);
+            opacity: 0;
+            animation: fadeInUp 1s var(--transition-smooth) 3.5s forwards;
+        }
+        
+        .scroll-mouse {
+            width: 24px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .scroll-mouse::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: var(--color-cream);
+            border-radius: 2px;
+            animation: scrollBounce 1.5s infinite;
+        }
+        
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            50% { transform: translateX(-50%) translateY(10px); opacity: 0.3; }
+        }
+        
+        /* ==================== SECTION STYLES ==================== */
+        .section {
+            padding: 6rem 2rem;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s var(--transition-smooth), 
+                        transform 0.8s var(--transition-smooth);
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-sage);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 500;
+            color: var(--color-forest);
+            line-height: 1.2;
+        }
+        
+        /* ==================== PORTFOLIO SECTION ==================== */
+        .portfolio {
+            background: var(--color-charcoal);
+            padding: 6rem 2rem;
+        }
+        
+        .portfolio .section-label {
+            color: var(--color-sage);
+        }
+        
+        .portfolio .section-title {
+            color: var(--color-cream);
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .portfolio-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: opacity 0.6s var(--transition-smooth),
+                        transform 0.6s var(--transition-smooth);
+        }
+        
+        .portfolio-item.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .portfolio-item:nth-child(even) {
+            aspect-ratio: 3/4;
+        }
+        
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--transition-smooth);
+        }
+        
+        .portfolio-item:hover img {
+            transform: scale(1.08);
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 1.5rem 1.5rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s, transform 0.4s;
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .portfolio-overlay h3 {
+            color: var(--color-cream);
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .portfolio-overlay p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+        
+        /* ==================== ABOUT SECTION ==================== */
+        .about {
+            background: var(--color-cream);
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .about-text h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--color-forest);
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        
+        .about-text p {
+            color: var(--color-charcoal-light);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .about-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .about-feature-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--color-forest);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .about-feature-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--color-cream);
+        }
+        
+        .about-feature-text h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--color-forest);
+            margin-bottom: 0.25rem;
+        }
+        
+        .about-feature-text p {
+            font-size: 0.8rem;
+            margin: 0;
+            color: var(--color-charcoal-light);
+            opacity: 0.8;
+        }
+        
+        .about-image {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+        
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            border: 3px solid var(--color-sage);
+            border-radius: 12px;
+            z-index: -1;
+        }
+        
+        /* ==================== CONTACT SECTION ==================== */
+        .contact {
+            background: linear-gradient(135deg, var(--color-forest) 0%, var(--color-forest-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .contact .section-label {
+            color: var(--color-sage);
+        }
+        
+        .contact .section-title {
+            color: var(--color-cream);
+        }
+        
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .contact-info h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--color-cream);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-method:last-child {
+            border-bottom: none;
+        }
+        
+        .contact-method-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .contact-method-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--color-cream);
+        }
+        
+        .contact-method-text span {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-method-text a,
+        .contact-method-text p {
+            color: var(--color-cream);
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0;
+            transition: color 0.3s;
+        }
+        
+        .contact-method-text a:hover {
+            color: var(--color-accent);
+        }
+        
+        .contact-form {
+            background: var(--color-cream);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+        }
+        
+        .contact-form h4 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--color-forest);
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--color-charcoal);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid var(--color-cream-dark);
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: var(--color-white);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-sage);
+            box-shadow: 0 0 0 4px rgba(107, 143, 113, 0.15);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--color-forest);
+            color: var(--color-cream);
+            border: none;
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: var(--color-forest-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(26, 60, 52, 0.3);
+        }
+        
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: var(--color-charcoal);
+            padding: 3rem 2rem;
+        }
+        
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-cream);
+            letter-spacing: 0.1em;
+        }
+        
+        .footer-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+        }
+        
+        .footer-social {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-social a:hover {
+            color: var(--color-cream);
+        }
+        
+        .footer-social svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* ==================== LIGHTBOX ==================== */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+        }
+        
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            transform: scale(0.9);
+            transition: transform 0.4s var(--transition-smooth);
+        }
+        
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+        
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, transform 0.3s;
+        }
+        
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        .lightbox-close svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+        
+        /* ==================== MOBILE STYLES ==================== */
+        @media (max-width: 968px) {
+            .header-nav {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-image {
+                order: -1;
+            }
+            
+            .about-image img {
+                height: 350px;
+            }
+            
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+            
+            .section {
+                padding: 4rem 1.5rem;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .portfolio-item,
+            .portfolio-item:nth-child(even) {
+                aspect-ratio: 4/3;
+            }
+            
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-form {
+                padding: 1.5rem;
+            }
+            
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 350px;
+            height: 100vh;
+            background: var(--color-forest);
+            z-index: 10001;
+            padding: 6rem 2rem 2rem;
+            transition: right 0.4s var(--transition-smooth);
+        }
+        
+        .mobile-nav.active {
+            right: 0;
+        }
+        
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+        }
+        
+        .mobile-nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .mobile-nav-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .mobile-nav-close svg {
+            width: 24px;
+            height: 24px;
+            color: var(--color-cream);
+        }
+        
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .mobile-nav-links a {
+            color: var(--color-cream);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: padding-left 0.3s, color 0.3s;
+        }
+        
+        .mobile-nav-links a:hover {
+            padding-left: 0.5rem;
+            color: var(--color-accent);
+        }
+        
+        .mobile-nav-instagram {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+            color: var(--color-cream);
+            text-decoration: none;
+        }
+        
+        .mobile-nav-instagram svg {
+            width: 28px;
+            height: 28px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Animation -->
+    <div class="loader" id="loader">
+        <div class="logo-animation" id="logoAnimation">
+            <span class="word-element">
+                <span class="logo-letter" id="letterE">E</span><span class="logo-hidden">l</span><span class="logo-hidden">e</span><span class="logo-hidden">m</span><span class="logo-hidden">e</span><span class="logo-hidden">n</span><span class="logo-hidden">t</span>
+            </span>
+            <span class="word-landscaping">
+                <span class="logo-letter" id="letterL">L</span><span class="logo-hidden">a</span><span class="logo-hidden">n</span><span class="logo-hidden">d</span><span class="logo-hidden">s</span><span class="logo-hidden">c</span><span class="logo-hidden">a</span><span class="logo-hidden">p</span><span class="logo-hidden">i</span><span class="logo-hidden">n</span><span class="logo-hidden">g</span>
+            </span>
+            <span class="word-waikato">
+                <span class="logo-letter" id="letterW">W</span><span class="logo-hidden">a</span><span class="logo-hidden">i</span><span class="logo-hidden">k</span><span class="logo-hidden">a</span><span class="logo-hidden">t</span><span class="logo-hidden">o</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="#" class="header-logo">ELW</a>
+            <nav class="header-nav">
+                <a href="#portfolio" class="nav-link">Our Work</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="https://www.instagram.com/elementlandscapewaikato?igsh=a3NnMGJpcjBxZTlw" target="_blank" rel="noopener noreferrer" class="instagram-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span>elementlandscapingwaikato</span>
+                </a>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="mobile-nav-links">
+            <a href="#portfolio">Our Work</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <a href="https://www.instagram.com/elementlandscapewaikato?igsh=a3NnMGJpcjBxZTlw" target="_blank" rel="noopener noreferrer" class="mobile-nav-instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>elementlandscapingwaikato</span>
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Element Landscaping Waikato</h1>
+            <p class="hero-subtitle">Professional Landscaping & Outdoor Solutions</p>
+            <div class="services-list" id="servicesList">
+                <span class="service-tag">Lawn Mowing & Maintenance</span>
+                <span class="service-tag">Garden Design & Planting</span>
+                <span class="service-tag">Hedge Trimming</span>
+                <span class="service-tag">Section Clean-ups</span>
+                <span class="service-tag">Retaining Walls</span>
+                <span class="service-tag">Paving & Hardscaping</span>
+                <span class="service-tag">General Outdoor Improvements</span>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <div class="scroll-mouse"></div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="section portfolio" id="portfolio">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">Our Work</p>
+                <h2 class="section-title">Recent Projects</h2>
+            </div>
+            <div class="portfolio-grid" id="portfolioGrid">
+                <div class="portfolio-item" data-img="images/project-1.jpg">
+                    <img src="images/project-1.jpg" alt="Retaining wall and planter boxes project" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Retaining Wall & Planters</h3>
+                        <p>Custom timber retaining wall with integrated planter boxes</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-img="images/project-2.jpg">
+                    <img src="images/project-2.jpg" alt="Concrete driveway and fencing" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Driveway & Fencing</h3>
+                        <p>Concrete pad with timber fence and covered area</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-img="images/project-3.jpg">
+                    <img src="images/project-3.jpg" alt="Rural fencing installation" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Rural Fencing</h3>
+                        <p>Post and rail fencing for paddock boundaries</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-img="images/project-4.jpg">
+                    <img src="images/project-4.jpg" alt="Timber post and rail fence" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Boundary Fencing</h3>
+                        <p>Quality timber fencing with steel gate installation</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-img="images/project-5.jpg">
+                    <img src="images/project-5.jpg" alt="Close up of fence craftsmanship" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Fence Detail</h3>
+                        <p>Quality craftsmanship in every detail</p>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-img="images/project-6.jpg">
+                    <img src="images/project-6.jpg" alt="Extensive paddock fencing" loading="lazy">
+                    <div class="portfolio-overlay">
+                        <h3>Paddock Fencing</h3>
+                        <p>Large-scale rural fencing project</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="section-inner">
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="section-label">About Us</p>
+                    <h3>Transforming Outdoor Spaces Across the Waikato</h3>
+                    <p>Element Landscaping Waikato delivers professional landscaping services with an unwavering commitment to quality. From residential gardens to rural properties, we bring expertise, reliability, and attention to detail to every project.</p>
+                    <p>Our team takes pride in understanding your vision and bringing it to life. Whether it's a complete garden transformation, routine maintenance, or a challenging fencing project, we approach each job with the same dedication to excellence.</p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <div class="about-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="about-feature-text">
+                                <h4>Quality Workmanship</h4>
+                                <p>Built to last, every time</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="about-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div class="about-feature-text">
+                                <h4>Local Service</h4>
+                                <p>Proudly serving Waikato</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="about-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div class="about-feature-text">
+                                <h4>Reliable</h4>
+                                <p>On time, every time</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="about-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                            </div>
+                            <div class="about-feature-text">
+                                <h4>Detail Focused</h4>
+                                <p>Nothing overlooked</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="images/project-1.jpg" alt="Element Landscaping quality work">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact" id="contact">
+        <div class="section-inner">
+            <div class="section-header">
+                <p class="section-label">Get In Touch</p>
+                <h2 class="section-title">Let's Start Your Project</h2>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Ready to Transform Your Outdoor Space?</h3>
+                    <p>Get in touch today for a free, no-obligation quote. We'll discuss your vision and provide expert advice on bringing your landscaping dreams to life.</p>
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div class="contact-method-text">
+                            <span>Call us</span>
+                            <a href="tel:+64000000000">Contact for number</a>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </div>
+                        <div class="contact-method-text">
+                            <span>Follow us</span>
+                            <a href="https://www.instagram.com/elementlandscapewaikato?igsh=a3NnMGJpcjBxZTlw" target="_blank" rel="noopener noreferrer">@elementlandscapingwaikato</a>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="contact-method-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div class="contact-method-text">
+                            <span>Service Area</span>
+                            <p>Waikato Region, New Zealand</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h4>Get a Free Quote</h4>
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" required placeholder="Your name">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" name="phone" required placeholder="Your phone number">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" required placeholder="Tell us about your project..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">Element Landscaping Waikato</div>
+            <p class="footer-text">© 2025 Element Landscaping Waikato. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/elementlandscapewaikato?igsh=a3NnMGJpcjBxZTlw" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    <span>elementlandscapingwaikato</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="lightbox-content">
+            <img src="" alt="Project image" id="lightboxImg">
+        </div>
+    </div>
+
+    <script>
+        // ==================== LOGO ANIMATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('loader');
+            const logoAnimation = document.getElementById('logoAnimation');
+            
+            // Start the expansion animation after a brief delay
+            setTimeout(() => {
+                logoAnimation.classList.add('expanded');
+            }, 500);
+            
+            // Fade out loader after animation completes
+            setTimeout(() => {
+                loader.classList.add('fade-out');
+                // Start service tags animation
+                animateServiceTags();
+            }, 2200);
+        });
+        
+        // ==================== SERVICE TAGS ANIMATION ====================
+        function animateServiceTags() {
+            const tags = document.querySelectorAll('.service-tag');
+            tags.forEach((tag, index) => {
+                setTimeout(() => {
+                    tag.classList.add('visible');
+                }, 3000 + (index * 150));
+            });
+        }
+        
+        // ==================== HEADER SCROLL EFFECT ====================
+        const header = document.getElementById('header');
+        let lastScroll = 0;
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+        
+        // ==================== MOBILE NAVIGATION ====================
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavClose = document.getElementById('mobileNavClose');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
+        
+        function openMobileNav() {
+            mobileNav.classList.add('active');
+            mobileNavOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileNav() {
+            mobileNav.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        mobileMenuBtn.addEventListener('click', openMobileNav);
+        mobileNavClose.addEventListener('click', closeMobileNav);
+        mobileNavOverlay.addEventListener('click', closeMobileNav);
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', closeMobileNav);
+        });
+        
+        // ==================== SCROLL ANIMATIONS (Intersection Observer) ====================
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            sectionObserver.observe(section);
+        });
+        
+        // Portfolio items animation with stagger
+        const portfolioObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.portfolio-item').forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.1}s`;
+            portfolioObserver.observe(item);
+        });
+        
+        // ==================== LIGHTBOX ====================
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        
+        portfolioItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const imgSrc = item.querySelector('img').src;
+                lightboxImg.src = imgSrc;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+        
+        // ==================== FORM HANDLING ====================
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+            
+            // Here you would typically send the data to a server
+            // For now, we'll just show a success message
+            alert('Thank you for your message! We will be in touch soon.');
+            contactForm.reset();
+        });
+        
+        // ==================== SMOOTH SCROLL FOR ANCHOR LINKS ====================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
