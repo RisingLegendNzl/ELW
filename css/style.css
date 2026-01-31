@@ -9,6 +9,7 @@
     --color-cream-dark: #e8e4dc;
     --color-white: #faf9f7;
     --color-accent: #c4a962;
+    --color-terracotta: #b35a2d;
     
     --font-display: 'Cormorant Garamond', Georgia, serif;
     --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
@@ -180,18 +181,46 @@ body {
     justify-content: space-between;
 }
 
+/* ==================== HEADER LOGO WITH SVG ==================== */
 .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     font-family: var(--font-display);
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--color-cream);
     text-decoration: none;
     letter-spacing: 0.15em;
-    transition: color 0.3s;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.header-logo:hover {
+    transform: translateY(-1px);
+}
+
+.header-logo-icon {
+    width: 42px;
+    height: 28px;
+    color: var(--color-terracotta);
+    transition: color 0.3s, transform 0.3s;
+    flex-shrink: 0;
+}
+
+.header-logo:hover .header-logo-icon {
+    transform: scale(1.05);
+}
+
+.header-logo-text {
+    position: relative;
 }
 
 .header.scrolled .header-logo {
     color: var(--color-forest);
+}
+
+.header.scrolled .header-logo-icon {
+    color: var(--color-terracotta);
 }
 
 .header-nav {
@@ -1024,6 +1053,17 @@ body {
     .contact-content {
         grid-template-columns: 1fr;
     }
+    
+    /* Header logo responsive adjustments */
+    .header-logo {
+        gap: 0.5rem;
+        font-size: 1.3rem;
+    }
+    
+    .header-logo-icon {
+        width: 36px;
+        height: 24px;
+    }
 }
 
 @media (max-width: 640px) {
@@ -1070,5 +1110,29 @@ body {
     
     .logo-animation.expanded .word-gap {
         width: 0.3em;
+    }
+    
+    /* Header logo smaller on mobile */
+    .header-logo {
+        gap: 0.4rem;
+        font-size: 1.2rem;
+    }
+    
+    .header-logo-icon {
+        width: 32px;
+        height: 21px;
+    }
+}
+
+/* ==================== VERY SMALL SCREENS ==================== */
+@media (max-width: 360px) {
+    .header-logo {
+        gap: 0.3rem;
+        font-size: 1.1rem;
+    }
+    
+    .header-logo-icon {
+        width: 28px;
+        height: 18px;
     }
 }
