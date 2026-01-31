@@ -19,20 +19,6 @@
     <!-- Loading Animation -->
     <div class="loader" id="loader">
         <div class="logo-animation" id="logoAnimation">
-            <!-- 
-                LOGO ANIMATION STRUCTURE
-                ========================
-                The animation works by:
-                1. Starting with E, L, W tightly together (no gaps)
-                2. When .expanded is added:
-                   - .word-gap elements expand from 0 to 0.35em
-                   - .logo-rest containers expand (max-width animation)
-                   - Individual .logo-char letters fade in with staggered delays
-                
-                To change the company name, modify the letters below.
-                The CSS handles the timing automatically.
-            -->
-            
             <!-- "Element" -->
             <span class="word word-element">
                 <span class="logo-main">E</span>
@@ -90,30 +76,18 @@
             <a href="#" class="header-logo">
                 <!-- Minimalist Landscape SVG -->
                 <svg class="header-logo-icon" viewBox="0 0 48 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <!-- Sun circle behind mountains -->
                     <circle cx="32" cy="12" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                    <!-- Left mountain (taller) -->
                     <path d="M4 28 L14 8 L24 28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                    <!-- Right mountain (shorter, overlapping) -->
                     <path d="M16 28 L24 14 L32 28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                    <!-- First tree (smaller) -->
                     <g class="tree tree-1">
-                        <!-- Trunk -->
                         <line x1="38" y1="28" x2="38" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        <!-- Lower branches -->
                         <path d="M34 24 L38 20 L42 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        <!-- Upper branches -->
                         <path d="M35.5 21 L38 18 L40.5 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                     </g>
-                    <!-- Second tree (taller) -->
                     <g class="tree tree-2">
-                        <!-- Trunk -->
                         <line x1="45" y1="28" x2="45" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        <!-- Lower branches -->
                         <path d="M41 24 L45 19 L49 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        <!-- Middle branches -->
                         <path d="M42 20 L45 16 L48 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        <!-- Upper branches -->
                         <path d="M43 16.5 L45 14 L47 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                     </g>
                 </svg>
@@ -184,55 +158,96 @@
         </div>
     </section>
 
-    <!-- Portfolio Section -->
+    <!-- Portfolio Section - Horizontal Gallery -->
     <section class="section portfolio" id="portfolio">
         <div class="section-inner">
             <div class="section-header">
                 <p class="section-label">Our Work</p>
                 <h2 class="section-title">Recent Projects</h2>
             </div>
-            <div class="portfolio-grid" id="portfolioGrid">
-                <div class="portfolio-item">
-                    <img src="images/22A9081D-5EF7-41FA-8780-4420C970FBC7.jpeg" alt="Landscaping project - Element Landscaping Waikato" loading="lazy">
-                    <div class="portfolio-overlay">
-                        <h3>Professional Landscaping</h3>
-                        <p>Quality outdoor transformation</p>
+            
+            <!-- Gallery Container -->
+            <div class="gallery-container">
+                <!-- Navigation Arrows -->
+                <button class="gallery-nav gallery-nav-prev" id="galleryPrev" aria-label="Previous project">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <button class="gallery-nav gallery-nav-next" id="galleryNext" aria-label="Next project">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+                
+                <!-- Gallery Track -->
+                <div class="gallery-viewport">
+                    <div class="gallery-track" id="galleryTrack">
+                        <div class="gallery-slide" data-index="0">
+                            <div class="gallery-item">
+                                <img src="images/22A9081D-5EF7-41FA-8780-4420C970FBC7.jpeg" alt="Landscaping project - Element Landscaping Waikato" loading="lazy">
+                                <div class="gallery-overlay">
+                                    <h3>Professional Landscaping</h3>
+                                    <p>Quality outdoor transformation</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-slide" data-index="1">
+                            <div class="gallery-item">
+                                <img src="images/33D18A1B-6541-43D8-B641-5344CD76F151.jpeg" alt="Fencing and outdoor project - Element Landscaping Waikato" loading="lazy">
+                                <div class="gallery-overlay">
+                                    <h3>Fencing Solutions</h3>
+                                    <p>Durable and professional installation</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-slide" data-index="2">
+                            <div class="gallery-item">
+                                <img src="images/397FF4D9-F2DF-4B69-9C5F-A966E95879A7.jpeg" alt="Rural landscaping project - Element Landscaping Waikato" loading="lazy">
+                                <div class="gallery-overlay">
+                                    <h3>Rural Projects</h3>
+                                    <p>Comprehensive outdoor solutions</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-slide" data-index="3">
+                            <div class="gallery-item">
+                                <img src="images/3A2E9DFD-D596-4A71-BE6B-548FF9393928.jpeg" alt="Boundary fencing - Element Landscaping Waikato" loading="lazy">
+                                <div class="gallery-overlay">
+                                    <h3>Boundary Work</h3>
+                                    <p>Expert fencing and boundary solutions</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-slide" data-index="4">
+                            <div class="gallery-item">
+                                <img src="images/63F8E3C5-4B92-4CA5-B20D-3AD5D2366BA6.jpeg" alt="Detailed craftsmanship - Element Landscaping Waikato" loading="lazy">
+                                <div class="gallery-overlay">
+                                    <h3>Quality Craftsmanship</h3>
+                                    <p>Attention to every detail</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gallery-slide" data-index="5">
+                            <div class="gallery-item">
+                                <img src="images/E7520A8A-4145-4BEC-BFDB-6BAE7355A9F2.jpeg" alt="Large scale project - Element Landscaping Waikato" loading="lazy">
+                                <div class="gallery-overlay">
+                                    <h3>Large Scale Projects</h3>
+                                    <p>Comprehensive landscaping solutions</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="portfolio-item">
-                    <img src="images/33D18A1B-6541-43D8-B641-5344CD76F151.jpeg" alt="Fencing and outdoor project - Element Landscaping Waikato" loading="lazy">
-                    <div class="portfolio-overlay">
-                        <h3>Fencing Solutions</h3>
-                        <p>Durable and professional installation</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="images/397FF4D9-F2DF-4B69-9C5F-A966E95879A7.jpeg" alt="Rural landscaping project - Element Landscaping Waikato" loading="lazy">
-                    <div class="portfolio-overlay">
-                        <h3>Rural Projects</h3>
-                        <p>Comprehensive outdoor solutions</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="images/3A2E9DFD-D596-4A71-BE6B-548FF9393928.jpeg" alt="Boundary fencing - Element Landscaping Waikato" loading="lazy">
-                    <div class="portfolio-overlay">
-                        <h3>Boundary Work</h3>
-                        <p>Expert fencing and boundary solutions</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="images/63F8E3C5-4B92-4CA5-B20D-3AD5D2366BA6.jpeg" alt="Detailed craftsmanship - Element Landscaping Waikato" loading="lazy">
-                    <div class="portfolio-overlay">
-                        <h3>Quality Craftsmanship</h3>
-                        <p>Attention to every detail</p>
-                    </div>
-                </div>
-                <div class="portfolio-item">
-                    <img src="images/E7520A8A-4145-4BEC-BFDB-6BAE7355A9F2.jpeg" alt="Large scale project - Element Landscaping Waikato" loading="lazy">
-                    <div class="portfolio-overlay">
-                        <h3>Large Scale Projects</h3>
-                        <p>Comprehensive landscaping solutions</p>
-                    </div>
+                
+                <!-- Gallery Indicators -->
+                <div class="gallery-indicators" id="galleryIndicators">
+                    <button class="gallery-dot active" data-index="0" aria-label="Go to slide 1"></button>
+                    <button class="gallery-dot" data-index="1" aria-label="Go to slide 2"></button>
+                    <button class="gallery-dot" data-index="2" aria-label="Go to slide 3"></button>
+                    <button class="gallery-dot" data-index="3" aria-label="Go to slide 4"></button>
+                    <button class="gallery-dot" data-index="4" aria-label="Go to slide 5"></button>
+                    <button class="gallery-dot" data-index="5" aria-label="Go to slide 6"></button>
                 </div>
             </div>
         </div>
