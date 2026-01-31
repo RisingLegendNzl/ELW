@@ -8,7 +8,7 @@
  * - Mobile navigation
  * - Portfolio lightbox
  * - Section scroll animations
- * - Form handling
+ * - Form handling (with SendGrid integration)
  * 
  * To modify the animation timing, adjust the values in the CONFIG object below.
  */
@@ -170,31 +170,73 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// ==================== FORM HANDLING ====================
+// ==================== FORM HANDLING (SendGrid Integration) ====================
 const contactForm = document.getElementById('contactForm');
+const submitBtn = contactForm.querySelector('.submit-btn');
+const originalBtnText = submitBtn.textContent;
 
-contactForm.addEventListener('submit', (e) => {
+contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     // Get form data
     const formData = new FormData(contactForm);
-    const data = Object.fromEntries(formData);
+    const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        message: formData.get('message')
+    };
     
-    // Here you would typically send the data to a server
-    // For now, we'll just show a success message
-    // 
-    // To integrate with a real backend, replace this with:
-    // fetch('/api/contact', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(data)
-    // })
-    // .then(response => response.json())
-    // .then(result => { /* handle success */ })
-    // .catch(error => { /* handle error */ });
+    // Disable submit button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    submitBtn.style.opacity = '0.7';
     
-    alert('Thank you for your message! We will be in touch soon.');
-    contactForm.reset();
+    try {
+        // Send form data to serverless function
+        const response = await fetch('/api/sendQuote', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Success feedback
+            submitBtn.textContent = 'Message Sent!';
+            submitBtn.style.background = '#6b8f71';
+            contactForm.reset();
+            
+            // Reset button after delay
+            setTimeout(() => {
+                submitBtn.textContent = originalBtnText;
+                submitBtn.style.background = '';
+                submitBtn.style.opacity = '';
+                submitBtn.disabled = false;
+            }, 3000);
+        } else {
+            // Error feedback
+            throw new Error(result.error || 'Failed to send message');
+        }
+        
+    } catch (error) {
+        console.error('Form submission error:', error);
+        
+        // Error feedback
+        submitBtn.textContent = 'Error - Try Again';
+        submitBtn.style.background = '#c45c5c';
+        
+        // Reset button after delay
+        setTimeout(() => {
+            submitBtn.textContent = originalBtnText;
+            submitBtn.style.background = '';
+            submitBtn.style.opacity = '';
+            submitBtn.disabled = false;
+        }, 3000);
+    }
 });
 
 // ==================== SMOOTH SCROLL FOR ANCHOR LINKS ====================
