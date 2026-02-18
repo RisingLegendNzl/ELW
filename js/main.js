@@ -1,29 +1,25 @@
 /**
  * Element Landscaping Waikato - Main JavaScript
  * =============================================
- * 
- * This file contains all interactive functionality for the website:
+ *
  * - Logo animation (ELW → Element Landscaping Waikato)
  * - Header scroll effects
  * - Mobile navigation
- * - Portfolio lightbox
+ * - Gallery grid with lightbox
  * - Section scroll animations
  * - Form handling
- * 
- * To modify the animation timing, adjust the values in the CONFIG object below.
  */
 
 // ==================== CONFIGURATION ====================
-// Easy to maintain - change these values to adjust animation timing
 const CONFIG = {
     animation: {
-        initialDelay: 600,        // Delay before animation starts (ms)
-        loaderFadeDelay: 2200,    // When loader starts fading out (ms)
-        serviceTagsStartDelay: 3000, // When service tags start appearing (ms)
-        serviceTagsStagger: 150   // Delay between each service tag (ms)
+        initialDelay: 600,
+        loaderFadeDelay: 2200,
+        serviceTagsStartDelay: 3000,
+        serviceTagsStagger: 150
     },
     scroll: {
-        headerScrollThreshold: 50 // Pixels scrolled before header changes
+        headerScrollThreshold: 50
     }
 };
 
@@ -31,20 +27,13 @@ const CONFIG = {
 document.addEventListener('DOMContentLoaded', () => {
     const loader = document.getElementById('loader');
     const logoAnimation = document.getElementById('logoAnimation');
-    
-    // Start the expansion animation after initial delay
-    // This triggers the CSS transitions for:
-    // - Word gaps expanding (creating space between E, L, W)
-    // - Hidden letter containers expanding (max-width animation)
-    // - Individual letters fading in (with staggered delays defined in CSS)
+
     setTimeout(() => {
         logoAnimation.classList.add('expanded');
     }, CONFIG.animation.initialDelay);
-    
-    // Fade out loader after animation completes
+
     setTimeout(() => {
         loader.classList.add('fade-out');
-        // Start service tags animation after loader fades
         animateServiceTags();
     }, CONFIG.animation.loaderFadeDelay);
 });
@@ -65,22 +54,20 @@ let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
     if (currentScroll > CONFIG.scroll.headerScrollThreshold) {
         header.classList.add('scrolled');
     } else {
         header.classList.remove('scrolled');
     }
-    
     lastScroll = currentScroll;
 });
 
 // ==================== MOBILE NAVIGATION ====================
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const mobileNav = document.getElementById('mobileNav');
-const mobileNavOverlay = document.getElementById('mobileNavOverlay');
-const mobileNavClose = document.getElementById('mobileNavClose');
-const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
+const mobileMenuBtn     = document.getElementById('mobileMenuBtn');
+const mobileNav         = document.getElementById('mobileNav');
+const mobileNavOverlay  = document.getElementById('mobileNavOverlay');
+const mobileNavClose    = document.getElementById('mobileNavClose');
+const mobileNavLinks    = document.querySelectorAll('.mobile-nav-links a');
 
 function openMobileNav() {
     mobileNav.classList.add('active');
@@ -97,94 +84,144 @@ function closeMobileNav() {
 mobileMenuBtn.addEventListener('click', openMobileNav);
 mobileNavClose.addEventListener('click', closeMobileNav);
 mobileNavOverlay.addEventListener('click', closeMobileNav);
-mobileNavLinks.forEach(link => {
-    link.addEventListener('click', closeMobileNav);
-});
+mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileNav));
 
 // ==================== SCROLL ANIMATIONS (Intersection Observer) ====================
-const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1
-};
+const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
 
 const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('visible');
     });
 }, observerOptions);
 
-// Observe all sections
 document.querySelectorAll('.section').forEach(section => {
     sectionObserver.observe(section);
 });
 
-// Portfolio items animation with stagger
-const portfolioObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
+// ==================== GALLERY GRID — staggered entrance ====================
+const galleryCells = document.querySelectorAll('.gallery-cell');
+
+const galleryObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
         if (entry.isIntersecting) {
+            // Stagger each cell by its index in the NodeList
+            const idx = [...galleryCells].indexOf(entry.target);
             setTimeout(() => {
                 entry.target.classList.add('visible');
-            }, index * 100);
+            }, idx * 70);
+            galleryObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.1 });
+}, { threshold: 0.05 });
 
-document.querySelectorAll('.portfolio-item').forEach((item, index) => {
-    item.style.transitionDelay = `${index * 0.1}s`;
-    portfolioObserver.observe(item);
-});
+galleryCells.forEach(cell => galleryObserver.observe(cell));
 
-// ==================== LIGHTBOX ====================
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightboxImg');
-const lightboxClose = document.getElementById('lightboxClose');
-const portfolioItems = document.querySelectorAll('.portfolio-item');
+// ==================== GALLERY LIGHTBOX ====================
+const lightbox        = document.getElementById('galleryLightbox');
+const lbBackdrop      = document.getElementById('galleryLightboxBackdrop');
+const lbImg           = document.getElementById('galleryLbImg');
+const lbCaption       = document.getElementById('galleryLbCaption');
+const lbCounter       = document.getElementById('galleryLbCounter');
+const lbClose         = document.getElementById('galleryLbClose');
+const lbPrev          = document.getElementById('galleryLbPrev');
+const lbNext          = document.getElementById('galleryLbNext');
 
-portfolioItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const imgSrc = item.querySelector('img').src;
-        lightboxImg.src = imgSrc;
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
-});
+// Build ordered array from gallery cells
+const galleryItems = [...galleryCells].map(cell => ({
+    src:     cell.dataset.src,
+    caption: cell.dataset.caption || ''
+}));
 
-function closeLightbox() {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = '';
+let currentIndex = 0;
+
+function openLightbox(index) {
+    currentIndex = index;
+    renderLightbox();
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
 }
 
-lightboxClose.addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) {
-        closeLightbox();
-    }
+function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    // Return focus to the triggering cell
+    galleryCells[currentIndex].focus();
+}
+
+function renderLightbox() {
+    const item = galleryItems[currentIndex];
+
+    // Brief fade-out then swap src
+    lbImg.style.opacity = '0';
+    setTimeout(() => {
+        lbImg.src    = item.src;
+        lbImg.alt    = item.caption;
+        lbImg.style.opacity = '1';
+    }, 140);
+
+    lbCaption.textContent = item.caption;
+    lbCounter.textContent = `${currentIndex + 1} / ${galleryItems.length}`;
+}
+
+function showPrev() {
+    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+    renderLightbox();
+}
+
+function showNext() {
+    currentIndex = (currentIndex + 1) % galleryItems.length;
+    renderLightbox();
+}
+
+// Open on cell click
+galleryCells.forEach((cell, idx) => {
+    cell.addEventListener('click', () => openLightbox(idx));
 });
 
+// Controls
+lbClose.addEventListener('click', closeLightbox);
+lbBackdrop.addEventListener('click', closeLightbox);
+lbPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+lbNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
+// Keyboard navigation
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-        closeLightbox();
-    }
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowLeft')   showPrev();
+    if (e.key === 'ArrowRight')  showNext();
 });
+
+// Touch/swipe support for lightbox
+let touchStartX = 0;
+
+lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+lightbox.addEventListener('touchend', (e) => {
+    const delta = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(delta) < 40) return;   // ignore tiny taps
+    if (delta < 0) showNext();
+    else           showPrev();
+});
+
+// Smooth img transition
+lbImg.style.transition = 'opacity 0.14s ease';
 
 // ==================== FORM HANDLING ====================
 const contactForm = document.getElementById('contactForm');
 
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    
-    // Get form data
+
     const formData = new FormData(contactForm);
     const data = Object.fromEntries(formData);
-    
-    // Here you would typically send the data to a server
-    // For now, we'll just show a success message
-    // 
-    // To integrate with a real backend, replace this with:
-    // fetch('/api/contact', {
+
+    // To integrate with a real backend, replace this block with:
+    // fetch('/api/sendQuote', {
     //     method: 'POST',
     //     headers: { 'Content-Type': 'application/json' },
     //     body: JSON.stringify(data)
@@ -192,7 +229,7 @@ contactForm.addEventListener('submit', (e) => {
     // .then(response => response.json())
     // .then(result => { /* handle success */ })
     // .catch(error => { /* handle error */ });
-    
+
     alert('Thank you for your message! We will be in touch soon.');
     contactForm.reset();
 });
@@ -206,11 +243,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const headerOffset = 80;
             const elementPosition = target.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-            
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
         }
     });
 });
