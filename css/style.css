@@ -270,6 +270,30 @@ body {
     height: 22px;
 }
 
+/* ==================== FACEBOOK LINK (matches Instagram) ==================== */
+.facebook-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-cream);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.facebook-link:hover {
+    transform: scale(1.05);
+}
+
+.header.scrolled .facebook-link {
+    color: var(--color-forest);
+}
+
+.facebook-link svg {
+    width: 22px;
+    height: 22px;
+}
+
 .mobile-menu-btn {
     display: none;
     background: none;
@@ -1021,11 +1045,42 @@ body {
     margin-top: 2rem;
     color: var(--color-cream);
     text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.mobile-nav-instagram:hover {
+    color: var(--color-accent);
+    transform: translateX(4px);
 }
 
 .mobile-nav-instagram svg {
     width: 28px;
     height: 28px;
+    flex-shrink: 0;
+}
+
+/* ==================== MOBILE NAV FACEBOOK (matches Instagram) ==================== */
+.mobile-nav-facebook {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    color: var(--color-cream);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.mobile-nav-facebook:hover {
+    color: var(--color-accent);
+    transform: translateX(4px);
+}
+
+.mobile-nav-facebook svg {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
 }
 
 /* ==================== MOBILE RESPONSIVE ==================== */
@@ -1099,6 +1154,11 @@ body {
     .footer-inner {
         flex-direction: column;
         text-align: center;
+    }
+
+    .footer-social {
+        flex-direction: column;
+        align-items: center;
     }
     
     /* Adjust logo animation for mobile */
