@@ -164,31 +164,38 @@ body {
 .header-logo {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--color-cream);
     text-decoration: none;
-    letter-spacing: 0.15em;
-    transition: color 0.3s, transform 0.3s;
-}
-
-.header-logo:hover { transform: translateY(-1px); }
-
-.header-logo-icon {
-    width: 42px;
-    height: 28px;
-    color: var(--color-terracotta);
-    transition: color 0.3s, transform 0.3s;
     flex-shrink: 0;
+    transition: opacity 0.25s var(--transition-smooth),
+                transform 0.25s var(--transition-smooth);
 }
 
-.header-logo:hover .header-logo-icon { transform: scale(1.05); }
-.header-logo-text { position: relative; }
+.header-logo:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+}
 
-.header.scrolled .header-logo { color: var(--color-forest); }
-.header.scrolled .header-logo-icon { color: var(--color-terracotta); }
+/* The logo image itself */
+.header-logo-img {
+    display: block;
+    /* Rendered height in the header — width scales automatically */
+    height: 52px;
+    width: auto;
+    /* mix-blend-mode keeps the transparent PNG readable on any bg colour */
+    mix-blend-mode: normal;
+    object-fit: contain;
+    transition: filter 0.3s var(--transition-smooth);
+}
+
+/*
+ * On the transparent hero header the logo sits on dark green — looks great.
+ * When header becomes scrolled (light cream bg) we invert/adjust so the
+ * green-on-black logo remains readable.
+ * A slight drop-shadow helps separation on the light bg.
+ */
+.header.scrolled .header-logo-img {
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.18));
+}
 
 .header-nav {
     display: flex;
@@ -1012,8 +1019,10 @@ body {
     .about-image img { height: 350px; }
     .contact-content { grid-template-columns: 1fr; }
 
-    .header-logo { gap: 0.5rem; font-size: 1.3rem; }
-    .header-logo-icon { width: 36px; height: 24px; }
+    /* Responsive logo image */
+    .header-logo-img {
+        height: 42px;
+    }
 
     /* 2 columns on tablet */
     .gallery-grid {
@@ -1053,11 +1062,15 @@ body {
     }
 
     .logo-animation.expanded .word-gap { width: 0.3em; }
-    .header-logo { gap: 0.4rem; font-size: 1.2rem; }
-    .header-logo-icon { width: 32px; height: 21px; }
+
+    /* Responsive logo image — smaller on phones */
+    .header-logo-img {
+        height: 36px;
+    }
 }
 
 @media (max-width: 360px) {
-    .header-logo { gap: 0.3rem; font-size: 1.1rem; }
-    .header-logo-icon { width: 28px; height: 18px; }
+    .header-logo-img {
+        height: 30px;
+    }
 }
