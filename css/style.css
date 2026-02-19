@@ -57,7 +57,7 @@ body {
     visibility: hidden;
 }
 
-/* ==================== LOGO ANIMATION - FIXED ==================== */
+/* ==================== LOGO ANIMATION ==================== */
 .logo-animation {
     display: flex;
     align-items: center;
@@ -70,21 +70,18 @@ body {
     position: relative;
 }
 
-/* Each word container */
 .word {
     display: inline-flex;
     white-space: nowrap;
     position: relative;
 }
 
-/* The main visible letters (E, L, W) */
 .logo-main {
     display: inline-block;
     position: relative;
     z-index: 2;
 }
 
-/* Hidden letters container */
 .logo-rest {
     display: inline-flex;
     overflow: hidden;
@@ -94,7 +91,6 @@ body {
                 opacity 0.8s var(--transition-smooth);
 }
 
-/* Individual hidden letters */
 .logo-char {
     display: inline-block;
     opacity: 0;
@@ -103,7 +99,6 @@ body {
                 transform 0.4s var(--transition-smooth);
 }
 
-/* Word spacing - starts at 0, expands with animation */
 .word-gap {
     display: inline-block;
     width: 0;
@@ -116,7 +111,7 @@ body {
 }
 
 .logo-animation.expanded .logo-rest {
-    max-width: 15em; /* Large enough to contain all letters */
+    max-width: 15em;
     opacity: 1;
 }
 
@@ -125,8 +120,7 @@ body {
     transform: translateY(0);
 }
 
-/* Staggered delays for hidden letters revealing */
-/* Element */
+/* Staggered delays — Element */
 .word-element .logo-char:nth-child(1) { transition-delay: 0.3s; }
 .word-element .logo-char:nth-child(2) { transition-delay: 0.35s; }
 .word-element .logo-char:nth-child(3) { transition-delay: 0.4s; }
@@ -134,19 +128,19 @@ body {
 .word-element .logo-char:nth-child(5) { transition-delay: 0.5s; }
 .word-element .logo-char:nth-child(6) { transition-delay: 0.55s; }
 
-/* Landscaping */
-.word-landscaping .logo-char:nth-child(1) { transition-delay: 0.35s; }
-.word-landscaping .logo-char:nth-child(2) { transition-delay: 0.4s; }
-.word-landscaping .logo-char:nth-child(3) { transition-delay: 0.45s; }
-.word-landscaping .logo-char:nth-child(4) { transition-delay: 0.5s; }
-.word-landscaping .logo-char:nth-child(5) { transition-delay: 0.55s; }
-.word-landscaping .logo-char:nth-child(6) { transition-delay: 0.6s; }
-.word-landscaping .logo-char:nth-child(7) { transition-delay: 0.65s; }
-.word-landscaping .logo-char:nth-child(8) { transition-delay: 0.7s; }
-.word-landscaping .logo-char:nth-child(9) { transition-delay: 0.75s; }
+/* Staggered delays — Landscaping */
+.word-landscaping .logo-char:nth-child(1)  { transition-delay: 0.35s; }
+.word-landscaping .logo-char:nth-child(2)  { transition-delay: 0.4s; }
+.word-landscaping .logo-char:nth-child(3)  { transition-delay: 0.45s; }
+.word-landscaping .logo-char:nth-child(4)  { transition-delay: 0.5s; }
+.word-landscaping .logo-char:nth-child(5)  { transition-delay: 0.55s; }
+.word-landscaping .logo-char:nth-child(6)  { transition-delay: 0.6s; }
+.word-landscaping .logo-char:nth-child(7)  { transition-delay: 0.65s; }
+.word-landscaping .logo-char:nth-child(8)  { transition-delay: 0.7s; }
+.word-landscaping .logo-char:nth-child(9)  { transition-delay: 0.75s; }
 .word-landscaping .logo-char:nth-child(10) { transition-delay: 0.8s; }
 
-/* Waikato */
+/* Staggered delays — Waikato */
 .word-waikato .logo-char:nth-child(1) { transition-delay: 0.4s; }
 .word-waikato .logo-char:nth-child(2) { transition-delay: 0.45s; }
 .word-waikato .logo-char:nth-child(3) { transition-delay: 0.5s; }
@@ -181,48 +175,46 @@ body {
     justify-content: space-between;
 }
 
-/* ==================== HEADER LOGO WITH SVG ==================== */
+/* ==================== HEADER LOGO — IMAGE VERSION ==================== */
 .header-logo {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--color-cream);
     text-decoration: none;
-    letter-spacing: 0.15em;
-    transition: color 0.3s, transform 0.3s;
+    /* give it room to breathe but keep it lean */
+    flex-shrink: 0;
+    transition: opacity 0.3s, transform 0.3s;
 }
 
 .header-logo:hover {
+    opacity: 0.85;
     transform: translateY(-1px);
 }
 
-.header-logo-icon {
-    width: 42px;
-    height: 28px;
-    color: var(--color-terracotta);
-    transition: color 0.3s, transform 0.3s;
-    flex-shrink: 0;
+/*
+ * The logo PNG has a black background that was removed.
+ * On the transparent/dark hero the image shows naturally.
+ * Once the header scrolls (light bg) we invert the brightness
+ * so the dark logo text stays readable.
+ */
+.header-logo-img {
+    height: 52px;          /* comfortable header height */
+    width: auto;
+    object-fit: contain;
+    display: block;
+    /* PNG is naturally dark-on-transparent — looks great on dark header */
+    filter: brightness(1);
+    transition: filter 0.3s, height 0.3s;
 }
 
-.header-logo:hover .header-logo-icon {
-    transform: scale(1.05);
+/* On scrolled (light) header: invert so green/grey logo reads on cream */
+.header.scrolled .header-logo-img {
+    height: 44px;          /* slightly smaller when header compresses */
+    /* keep green green but ensure it's visible on light bg — no invert needed
+       since the PNG already has colour; just ensure contrast is fine */
+    filter: brightness(1);
 }
 
-.header-logo-text {
-    position: relative;
-}
-
-.header.scrolled .header-logo {
-    color: var(--color-forest);
-}
-
-.header.scrolled .header-logo-icon {
-    color: var(--color-terracotta);
-}
-
+/* ==================== HEADER NAV ==================== */
 .header-nav {
     display: flex;
     align-items: center;
@@ -322,9 +314,13 @@ body {
     z-index: 1;
 }
 
-/* ==================== HERO BRAND IMAGE (replaces h1 title) ==================== */
+/* ==================== HERO BRAND IMAGE ==================== */
+/*
+ * Replaces the previous h1 title / cover photo.
+ * The transparent-bg PNG sits naturally on the dark hero gradient.
+ */
 .hero-brand-image-wrap {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     opacity: 0;
     transform: translateY(30px);
     animation: fadeInUp 1s var(--transition-smooth) 2.5s forwards;
@@ -333,12 +329,11 @@ body {
 .hero-brand-image {
     display: block;
     width: 100%;
-    max-width: 680px;          /* caps width on large screens */
+    max-width: 600px;      /* desktop cap — wide enough to read easily */
     height: auto;
-    border-radius: 12px;
-    object-fit: cover;
-    /* subtle drop shadow so it lifts off the dark hero bg */
-    filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.45));
+    object-fit: contain;
+    /* subtle drop shadow so it reads on any bg shade */
+    filter: drop-shadow(0 6px 24px rgba(0, 0, 0, 0.35));
 }
 
 /* ==================== end hero brand image ==================== */
@@ -346,7 +341,6 @@ body {
 .hero-subtitle {
     font-size: clamp(1rem, 2.5vw, 1.4rem);
     color: var(--color-cream);
-    opacity: 0.9;
     margin-bottom: 3rem;
     font-weight: 300;
     letter-spacing: 0.05em;
@@ -438,7 +432,7 @@ body {
 
 @keyframes scrollBounce {
     0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
-    50% { transform: translateX(-50%) translateY(10px); opacity: 0.3; }
+    50%       { transform: translateX(-50%) translateY(10px); opacity: 0.3; }
 }
 
 /* ==================== SECTION STYLES ==================== */
@@ -488,13 +482,8 @@ body {
     padding: 6rem 2rem;
 }
 
-.portfolio .section-label {
-    color: var(--color-sage);
-}
-
-.portfolio .section-title {
-    color: var(--color-cream);
-}
+.portfolio .section-label { color: var(--color-sage); }
+.portfolio .section-title { color: var(--color-cream); }
 
 .portfolio-grid {
     display: grid;
@@ -677,13 +666,8 @@ body {
     border-radius: 50%;
 }
 
-.contact .section-label {
-    color: var(--color-sage);
-}
-
-.contact .section-title {
-    color: var(--color-cream);
-}
+.contact .section-label { color: var(--color-sage); }
+.contact .section-title { color: var(--color-cream); }
 
 .contact-content {
     display: grid;
@@ -714,9 +698,7 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.contact-method:last-child {
-    border-bottom: none;
-}
+.contact-method:last-child { border-bottom: none; }
 
 .contact-method-icon {
     width: 50px;
@@ -750,9 +732,7 @@ body {
     transition: color 0.3s;
 }
 
-.contact-method-text a:hover {
-    color: var(--color-accent);
-}
+.contact-method-text a:hover { color: var(--color-accent); }
 
 .contact-form {
     background: var(--color-cream);
@@ -768,9 +748,7 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.form-group {
-    margin-bottom: 1.25rem;
-}
+.form-group { margin-bottom: 1.25rem; }
 
 .form-group label {
     display: block;
@@ -874,9 +852,7 @@ body {
     transition: color 0.3s;
 }
 
-.footer-social a:hover {
-    color: var(--color-cream);
-}
+.footer-social a:hover { color: var(--color-cream); }
 
 .footer-social svg {
     width: 20px;
@@ -912,9 +888,7 @@ body {
     transition: transform 0.4s var(--transition-smooth);
 }
 
-.lightbox.active .lightbox-content {
-    transform: scale(1);
-}
+.lightbox.active .lightbox-content { transform: scale(1); }
 
 .lightbox-content img {
     max-width: 100%;
@@ -964,9 +938,7 @@ body {
     transition: right 0.4s var(--transition-smooth);
 }
 
-.mobile-nav.active {
-    right: 0;
-}
+.mobile-nav.active { right: 0; }
 
 .mobile-nav-overlay {
     position: fixed;
@@ -1037,122 +1009,56 @@ body {
     height: 28px;
 }
 
-/* ==================== MOBILE RESPONSIVE ==================== */
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 968px) {
-    .header-nav {
-        display: none;
-    }
-    
-    .mobile-menu-btn {
-        display: block;
-    }
-    
-    .about-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .about-image {
-        order: -1;
-    }
-    
-    .about-image img {
-        height: 350px;
-    }
-    
-    .contact-content {
-        grid-template-columns: 1fr;
-    }
-    
-    /* Header logo responsive adjustments */
-    .header-logo {
-        gap: 0.5rem;
-        font-size: 1.3rem;
-    }
-    
-    .header-logo-icon {
-        width: 36px;
-        height: 24px;
-    }
+    .header-nav    { display: none; }
+    .mobile-menu-btn { display: block; }
 
-    /* Brand image responsive */
-    .hero-brand-image {
-        max-width: 520px;
-    }
+    .about-content { grid-template-columns: 1fr; }
+    .about-image   { order: -1; }
+    .about-image img { height: 350px; }
+
+    .contact-content { grid-template-columns: 1fr; }
+
+    /* Header logo image at tablet */
+    .header-logo-img { height: 44px; }
+
+    /* Hero brand image at tablet */
+    .hero-brand-image { max-width: 480px; }
 }
 
 @media (max-width: 640px) {
-    .hero {
-        padding: 6rem 1.5rem 3rem;
-    }
-    
-    .section {
-        padding: 4rem 1.5rem;
-    }
-    
-    .portfolio-grid {
-        grid-template-columns: 1fr;
-    }
-    
+    .hero    { padding: 6rem 1.5rem 3rem; }
+    .section { padding: 4rem 1.5rem; }
+
+    .portfolio-grid { grid-template-columns: 1fr; }
     .portfolio-item,
-    .portfolio-item:nth-child(even) {
-        aspect-ratio: 4/3;
-    }
-    
-    .about-features {
-        grid-template-columns: 1fr;
-    }
-    
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .contact-form {
-        padding: 1.5rem;
-    }
-    
+    .portfolio-item:nth-child(even) { aspect-ratio: 4/3; }
+
+    .about-features { grid-template-columns: 1fr; }
+    .form-row       { grid-template-columns: 1fr; }
+    .contact-form   { padding: 1.5rem; }
+
     .footer-inner {
         flex-direction: column;
         text-align: center;
     }
-    
-    /* Adjust logo animation for mobile */
+
+    /* Logo animation smaller on mobile */
     .logo-animation {
         font-size: clamp(1.5rem, 4vw, 2.5rem);
         flex-wrap: wrap;
         justify-content: center;
     }
-    
-    .logo-animation.expanded .word-gap {
-        width: 0.3em;
-    }
-    
-    /* Header logo smaller on mobile */
-    .header-logo {
-        gap: 0.4rem;
-        font-size: 1.2rem;
-    }
-    
-    .header-logo-icon {
-        width: 32px;
-        height: 21px;
-    }
+    .logo-animation.expanded .word-gap { width: 0.3em; }
 
-    /* Brand image full-width on mobile */
-    .hero-brand-image {
-        max-width: 100%;
-        border-radius: 8px;
-    }
+    /* Header logo image on mobile */
+    .header-logo-img { height: 36px; }
+
+    /* Hero brand image full width on mobile */
+    .hero-brand-image { max-width: 100%; }
 }
 
-/* ==================== VERY SMALL SCREENS ==================== */
 @media (max-width: 360px) {
-    .header-logo {
-        gap: 0.3rem;
-        font-size: 1.1rem;
-    }
-    
-    .header-logo-icon {
-        width: 28px;
-        height: 18px;
-    }
+    .header-logo-img { height: 30px; }
 }
