@@ -420,13 +420,10 @@ body {
 .portfolio .section-label { color: var(--color-sage); }
 .portfolio .section-title { color: var(--color-cream); }
 
-/*
- * Grid: auto-fit with 300 px minimum.
- * The featured card spans 2 columns on screens wide enough to show ≥2 cols.
- */
+/* 3-column grid on desktop */
 .portfolio-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
 }
 
@@ -437,6 +434,7 @@ body {
     overflow: hidden;
     aspect-ratio: 4/3;
     cursor: pointer;
+    /* starts hidden — JS IntersectionObserver adds .visible */
     opacity: 0;
     transform: translateY(30px) scale(0.95);
     transition: opacity 0.6s var(--transition-smooth),
@@ -448,8 +446,10 @@ body {
     transform: translateY(0) scale(1);
 }
 
-/* Original rule: every other card is portrait */
-.portfolio-item:nth-child(even) { aspect-ratio: 3/4; }
+/* Portrait ratio for every other standard card */
+.portfolio-item:not(.portfolio-item--featured):nth-child(even) {
+    aspect-ratio: 3/4;
+}
 
 .portfolio-item img {
     width: 100%;
@@ -464,7 +464,7 @@ body {
     position: absolute;
     bottom: 0; left: 0; right: 0;
     padding: 2rem 1.5rem 1.5rem;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
     opacity: 0;
     transform: translateY(10px);
     transition: opacity 0.4s, transform 0.4s;
@@ -484,26 +484,53 @@ body {
 }
 
 .portfolio-overlay p {
-    color: rgba(255,255,255,0.7);
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.85rem;
 }
 
-/* ==================== FEATURED CARD ==================== */
+/* ==================== FEATURED CARD (IMG_1284) ==================== */
 /*
- * Spans 2 columns when the grid has room for them.
- * Uses a wider landscape aspect ratio to showcase the fencing photo well.
- * Overrides the :nth-child(even) portrait rule since it's always first.
+ * Full-width hero card at the top of the gallery.
+ * Explicitly overrides opacity/transform so it is ALWAYS visible
+ * regardless of whether the IntersectionObserver has fired.
+ * Also overrides .portfolio-item:nth-child(even) portrait ratio
+ * since it is the first child (odd).
  */
 .portfolio-item--featured {
-    grid-column: span 2;
-    aspect-ratio: 16/9;   /* wide landscape — suits the fencing/paving shot */
+    grid-column: 1 / -1;   /* span all 3 columns */
+    aspect-ratio: 16 / 7;  /* wide landscape — suits the fencing/courtyard shot */
+    /* Hard-override the base opacity: 0 — this card must always show */
+    opacity: 1 !important;
+    transform: none !important;
+    /* Keep hover image-scale transition */
+    transition: box-shadow 0.3s var(--transition-smooth);
 }
 
-/* On narrow grids (single column) the span has no effect — reset to landscape */
-@media (max-width: 680px) {
+.portfolio-item--featured:hover {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Tablet (≤ 900 px): 2-col grid ── */
+@media (max-width: 900px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .portfolio-item--featured {
-        grid-column: span 1;
-        aspect-ratio: 4/3;
+        grid-column: 1 / -1;
+        aspect-ratio: 16 / 9;
+    }
+}
+
+/* ── Mobile (≤ 640 px): single column ── */
+@media (max-width: 640px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-item--featured {
+        grid-column: 1 / -1;
+        aspect-ratio: 4 / 3;
     }
 }
 
@@ -892,21 +919,15 @@ body {
     .hero-brand-image { max-width: 480px; }
 }
 
-@media (max-width: 680px) {
-    /* Featured card drops to single column */
-    .portfolio-item--featured {
-        grid-column: span 1;
-        aspect-ratio: 4/3;
-    }
-}
-
 @media (max-width: 640px) {
     .hero    { padding: 6rem 1.5rem 3rem; }
     .section { padding: 4rem 1.5rem; }
 
-    .portfolio-grid { grid-template-columns: 1fr; }
-    .portfolio-item,
-    .portfolio-item:nth-child(even) { aspect-ratio: 4/3; }
+    /* Standard (non-featured) cards: all landscape on mobile */
+    .portfolio-item:not(.portfolio-item--featured),
+    .portfolio-item:not(.portfolio-item--featured):nth-child(even) {
+        aspect-ratio: 4/3;
+    }
 
     .about-features { grid-template-columns: 1fr; }
     .form-row       { grid-template-columns: 1fr; }
