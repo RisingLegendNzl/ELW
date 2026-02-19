@@ -2,12 +2,13 @@
  * Element Landscaping Waikato - Main JavaScript
  * =============================================
  *
+ * Handles:
  * - Logo animation (ELW → Element Landscaping Waikato)
  * - Header scroll effects
  * - Mobile navigation
- * - Gallery grid with lightbox
+ * - Portfolio lightbox
  * - Section scroll animations
- * - Form handling
+ * - Form handling (SendGrid via /api/sendQuote)
  */
 
 // ==================== CONFIGURATION ====================
@@ -36,6 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
         loader.classList.add('fade-out');
         animateServiceTags();
     }, CONFIG.animation.loaderFadeDelay);
+
+    // ── Make the featured card visible immediately ──────────────────
+    // The base .portfolio-item starts at opacity:0 so the JS observer
+    // can animate cards in. The featured card overrides this in CSS
+    // with !important, but we also add .visible here as a belt-and-
+    // braces guarantee so no code path can leave it invisible.
+    const featured = document.querySelector('.portfolio-item--featured');
+    if (featured) {
+        featured.classList.add('visible');
+    }
 });
 
 // ==================== SERVICE TAGS ANIMATION ====================
@@ -50,16 +61,13 @@ function animateServiceTags() {
 
 // ==================== HEADER SCROLL EFFECT ====================
 const header = document.getElementById('header');
-let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    if (currentScroll > CONFIG.scroll.headerScrollThreshold) {
+    if (window.pageYOffset > CONFIG.scroll.headerScrollThreshold) {
         header.classList.add('scrolled');
     } else {
         header.classList.remove('scrolled');
     }
-    lastScroll = currentScroll;
 });
 
 // ==================== MOBILE NAVIGATION ====================
@@ -86,12 +94,15 @@ mobileNavClose.addEventListener('click', closeMobileNav);
 mobileNavOverlay.addEventListener('click', closeMobileNav);
 mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileNav));
 
-// ==================== SCROLL ANIMATIONS (Intersection Observer) ====================
+// ==================== SCROLL ANIMATIONS ====================
 const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
 
+// Section observer
 const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
     });
 }, observerOptions);
 
@@ -99,150 +110,109 @@ document.querySelectorAll('.section').forEach(section => {
     sectionObserver.observe(section);
 });
 
-// ==================== GALLERY GRID — staggered entrance ====================
-const galleryCells = document.querySelectorAll('.gallery-cell');
-
-const galleryObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
+// Portfolio items — staggered fade-in
+// The featured card already has .visible (added above) so adding it
+// again here is harmless; it just won't re-trigger the transition.
+const portfolioObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
-            // Stagger each cell by its index in the NodeList
-            const idx = [...galleryCells].indexOf(entry.target);
             setTimeout(() => {
                 entry.target.classList.add('visible');
-            }, idx * 70);
-            galleryObserver.unobserve(entry.target);
+            }, index * 100);
         }
     });
-}, { threshold: 0.05 });
+}, { threshold: 0.1 });
 
-galleryCells.forEach(cell => galleryObserver.observe(cell));
+document.querySelectorAll('.portfolio-item').forEach((item, index) => {
+    item.style.transitionDelay = `${index * 0.1}s`;
+    portfolioObserver.observe(item);
+});
 
-// ==================== GALLERY LIGHTBOX ====================
-const lightbox        = document.getElementById('galleryLightbox');
-const lbBackdrop      = document.getElementById('galleryLightboxBackdrop');
-const lbImg           = document.getElementById('galleryLbImg');
-const lbCaption       = document.getElementById('galleryLbCaption');
-const lbCounter       = document.getElementById('galleryLbCounter');
-const lbClose         = document.getElementById('galleryLbClose');
-const lbPrev          = document.getElementById('galleryLbPrev');
-const lbNext          = document.getElementById('galleryLbNext');
+// ── Fallback: if the observer hasn't fired after 4 s (e.g. JS disabled
+//    scrolling quirks), force all portfolio items visible ──────────────
+setTimeout(() => {
+    document.querySelectorAll('.portfolio-item').forEach(item => {
+        item.classList.add('visible');
+    });
+}, 4000);
 
-// Build ordered array from gallery cells
-const galleryItems = [...galleryCells].map(cell => ({
-    src:     cell.dataset.src,
-    caption: cell.dataset.caption || ''
-}));
+// ==================== LIGHTBOX ====================
+const lightbox      = document.getElementById('lightbox');
+const lightboxImg   = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
 
-let currentIndex = 0;
-
-function openLightbox(index) {
-    currentIndex = index;
-    renderLightbox();
-    lightbox.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    lbClose.focus();
-}
+document.querySelectorAll('.portfolio-item').forEach(item => {
+    item.addEventListener('click', () => {
+        const imgSrc = item.querySelector('img').src;
+        lightboxImg.src = imgSrc;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+});
 
 function closeLightbox() {
-    lightbox.classList.remove('open');
+    lightbox.classList.remove('active');
     document.body.style.overflow = '';
-    // Return focus to the triggering cell
-    galleryCells[currentIndex].focus();
 }
 
-function renderLightbox() {
-    const item = galleryItems[currentIndex];
-
-    // Brief fade-out then swap src
-    lbImg.style.opacity = '0';
-    setTimeout(() => {
-        lbImg.src    = item.src;
-        lbImg.alt    = item.caption;
-        lbImg.style.opacity = '1';
-    }, 140);
-
-    lbCaption.textContent = item.caption;
-    lbCounter.textContent = `${currentIndex + 1} / ${galleryItems.length}`;
-}
-
-function showPrev() {
-    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-    renderLightbox();
-}
-
-function showNext() {
-    currentIndex = (currentIndex + 1) % galleryItems.length;
-    renderLightbox();
-}
-
-// Open on cell click
-galleryCells.forEach((cell, idx) => {
-    cell.addEventListener('click', () => openLightbox(idx));
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
 });
 
-// Controls
-lbClose.addEventListener('click', closeLightbox);
-lbBackdrop.addEventListener('click', closeLightbox);
-lbPrev.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
-lbNext.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
-
-// Keyboard navigation
 document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('open')) return;
-    if (e.key === 'Escape')      closeLightbox();
-    if (e.key === 'ArrowLeft')   showPrev();
-    if (e.key === 'ArrowRight')  showNext();
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+    }
 });
 
-// Touch/swipe support for lightbox
-let touchStartX = 0;
-
-lightbox.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-}, { passive: true });
-
-lightbox.addEventListener('touchend', (e) => {
-    const delta = e.changedTouches[0].screenX - touchStartX;
-    if (Math.abs(delta) < 40) return;   // ignore tiny taps
-    if (delta < 0) showNext();
-    else           showPrev();
-});
-
-// Smooth img transition
-lbImg.style.transition = 'opacity 0.14s ease';
-
-// ==================== FORM HANDLING ====================
+// ==================== FORM HANDLING (SendGrid) ====================
 const contactForm = document.getElementById('contactForm');
 
-contactForm.addEventListener('submit', (e) => {
+contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(contactForm);
-    const data = Object.fromEntries(formData);
+    const submitBtn = contactForm.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
 
-    // To integrate with a real backend, replace this block with:
-    // fetch('/api/sendQuote', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(data)
-    // })
-    // .then(response => response.json())
-    // .then(result => { /* handle success */ })
-    // .catch(error => { /* handle error */ });
+    const formData  = new FormData(contactForm);
+    const data      = Object.fromEntries(formData);
 
-    alert('Thank you for your message! We will be in touch soon.');
-    contactForm.reset();
+    submitBtn.textContent = 'Sending…';
+    submitBtn.disabled    = true;
+
+    try {
+        const response = await fetch('/api/sendQuote', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert('Thank you for your message! We will be in touch soon.');
+            contactForm.reset();
+        } else {
+            alert('Failed to send message: ' + (result.error || 'Please try again.'));
+        }
+    } catch (error) {
+        alert('Failed to send message. Please try again later.');
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled    = false;
+    }
 });
 
-// ==================== SMOOTH SCROLL FOR ANCHOR LINKS ====================
+// ==================== SMOOTH SCROLL ====================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            const headerOffset = 80;
+            const headerOffset   = 80;
             const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            const offsetPosition  = elementPosition + window.pageYOffset - headerOffset;
             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
         }
     });
