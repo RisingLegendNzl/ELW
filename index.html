@@ -140,7 +140,7 @@
         </div>
     </section>
 
-    <!-- Portfolio / Our Work Section — SLIDESHOW -->
+    <!-- Portfolio / Our Work Section — GRID GALLERY -->
     <section class="section portfolio" id="portfolio">
         <div class="section-inner">
             <div class="section-header">
@@ -148,104 +148,161 @@
                 <h2 class="section-title">Our Work</h2>
             </div>
 
-            <div class="slideshow" id="slideshow">
-                <div class="slideshow-viewport">
-                    <div class="slideshow-track" id="slideshowTrack">
+            <div class="gallery-grid" id="galleryGrid">
 
-                        <div class="slideshow-slide active" data-index="0">
-                            <img src="images/IMG_1284.jpeg"
-                                 alt="Timber boundary fence with black-pebble garden bed — Element Landscaping Waikato"
-                                 loading="eager">
-                            <div class="slideshow-overlay">
-                                <h3>Fencing &amp; Paving</h3>
-                                <p>Timber boundary fence with black-pebble garden bed</p>
-                            </div>
-                        </div>
-
-                        <div class="slideshow-slide" data-index="1">
-                            <img src="images/22A9081D-5EF7-41FA-8780-4420C970FBC7.jpeg"
-                                 alt="Landscaping project - Element Landscaping Waikato"
-                                 loading="lazy">
-                            <div class="slideshow-overlay">
-                                <h3>Professional Landscaping</h3>
-                                <p>Quality outdoor transformation</p>
-                            </div>
-                        </div>
-
-                        <div class="slideshow-slide" data-index="2">
-                            <img src="images/33D18A1B-6541-43D8-B641-5344CD76F151.jpeg"
-                                 alt="Fencing and outdoor project - Element Landscaping Waikato"
-                                 loading="lazy">
-                            <div class="slideshow-overlay">
-                                <h3>Fencing Solutions</h3>
-                                <p>Durable and professional installation</p>
-                            </div>
-                        </div>
-
-                        <div class="slideshow-slide" data-index="3">
-                            <img src="images/397FF4D9-F2DF-4B69-9C5F-A966E95879A7.jpeg"
-                                 alt="Rural landscaping project - Element Landscaping Waikato"
-                                 loading="lazy">
-                            <div class="slideshow-overlay">
-                                <h3>Rural Projects</h3>
-                                <p>Comprehensive outdoor solutions</p>
-                            </div>
-                        </div>
-
-                        <div class="slideshow-slide" data-index="4">
-                            <img src="images/3A2E9DFD-D596-4A71-BE6B-548FF9393928.jpeg"
-                                 alt="Boundary fencing - Element Landscaping Waikato"
-                                 loading="lazy">
-                            <div class="slideshow-overlay">
-                                <h3>Boundary Work</h3>
-                                <p>Expert fencing and boundary solutions</p>
-                            </div>
-                        </div>
-
-                        <div class="slideshow-slide" data-index="5">
-                            <img src="images/63F8E3C5-4B92-4CA5-B20D-3AD5D2366BA6.jpeg"
-                                 alt="Detailed craftsmanship - Element Landscaping Waikato"
-                                 loading="lazy">
-                            <div class="slideshow-overlay">
-                                <h3>Quality Craftsmanship</h3>
-                                <p>Attention to every detail</p>
-                            </div>
-                        </div>
-
-                        <div class="slideshow-slide" data-index="6">
-                            <img src="images/E7520A8A-4145-4BEC-BFDB-6BAE7355A9F2.jpeg"
-                                 alt="Large scale project - Element Landscaping Waikato"
-                                 loading="lazy">
-                            <div class="slideshow-overlay">
-                                <h3>Large Scale Projects</h3>
-                                <p>Comprehensive landscaping solutions</p>
-                            </div>
-                        </div>
-
-                    </div>
+                <!-- Original images -->
+                <div class="gallery-item">
+                    <img src="images/IMG_1284.jpeg"
+                         alt="Timber boundary fence with black-pebble garden bed — Element Landscaping Waikato"
+                         loading="eager">
                 </div>
 
-                <!-- Navigation arrows -->
-                <button class="slideshow-btn slideshow-btn--prev" id="slideshowPrev" aria-label="Previous slide">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                <button class="slideshow-btn slideshow-btn--next" id="slideshowNext" aria-label="Next slide">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-
-                <!-- Dot indicators -->
-                <div class="slideshow-dots" id="slideshowDots"></div>
-
-                <!-- Progress bar -->
-                <div class="slideshow-progress">
-                    <div class="slideshow-progress-bar" id="slideshowProgressBar"></div>
+                <div class="gallery-item">
+                    <img src="images/22A9081D-5EF7-41FA-8780-4420C970FBC7.jpeg"
+                         alt="Professional landscaping project — Element Landscaping Waikato"
+                         loading="lazy">
                 </div>
+
+                <div class="gallery-item">
+                    <img src="images/33D18A1B-6541-43D8-B641-5344CD76F151.jpeg"
+                         alt="Fencing and outdoor project — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/397FF4D9-F2DF-4B69-9C5F-A966E95879A7.jpeg"
+                         alt="Rural landscaping project — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/3A2E9DFD-D596-4A71-BE6B-548FF9393928.jpeg"
+                         alt="Boundary fencing — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/63F8E3C5-4B92-4CA5-B20D-3AD5D2366BA6.jpeg"
+                         alt="Detailed craftsmanship — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/E7520A8A-4145-4BEC-BFDB-6BAE7355A9F2.jpeg"
+                         alt="Large scale project — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <!-- New images -->
+                <div class="gallery-item">
+                    <img src="images/IMG_0022.jpeg"
+                         alt="Front entrance landscaping with timber steps and paving — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_0024.jpeg"
+                         alt="Raised garden beds and gravel pathways — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_0113.jpeg"
+                         alt="Timber retaining wall and planter box — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_0130.jpeg"
+                         alt="Timber fence detail with clean joinery — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_0129.jpeg"
+                         alt="Horizontal timber boundary fence — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_0122.jpeg"
+                         alt="Horizontal timber boundary fence installation — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_0962.jpeg"
+                         alt="Hardwood entrance deck platform — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_0963.jpeg"
+                         alt="Hardwood entrance deck — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1069.jpeg"
+                         alt="Timber planter box along boundary fence — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1188.jpeg"
+                         alt="Timber deck with retaining wall and lawn — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1192.jpeg"
+                         alt="Concrete paver pad installation — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1194.jpeg"
+                         alt="Paving and gravel border detail — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1195.jpeg"
+                         alt="Paving pathway with gravel surround — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1239.jpeg"
+                         alt="Full-length timber boundary fence — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1240.jpeg"
+                         alt="Timber boundary fence from alternate angle — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1269.jpeg"
+                         alt="Garden bed edging with mulch and planting — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1270.jpeg"
+                         alt="Garden bed detail with new plantings — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="images/IMG_1273.jpeg"
+                         alt="Vertical timber fence enclosure — Element Landscaping Waikato"
+                         loading="lazy">
+                </div>
+
             </div>
-
         </div>
     </section>
 
@@ -396,7 +453,7 @@
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-logo">Element Landscaping Waikato</div>
-            <p class="footer-text">© 2025 Element Landscaping Waikato. All rights reserved.</p>
+            <p class="footer-text">&copy; 2025 Element Landscaping Waikato. All rights reserved.</p>
             <div class="footer-social">
                 <a href="https://www.instagram.com/elementlandscapewaikato?igsh=a3NnMGJpcjBxZTlw" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
