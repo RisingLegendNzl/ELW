@@ -6,7 +6,8 @@
  * - Logo animation (ELW → Element Landscaping Waikato)
  * - Header scroll effects
  * - Mobile navigation
- * - Portfolio lightbox
+ * - Portfolio slideshow (auto-advance with 1.5s cooldown)
+ * - Lightbox
  * - Section scroll animations
  * - Form handling (SendGrid via /api/sendQuote)
  */
@@ -21,6 +22,9 @@ const CONFIG = {
     },
     scroll: {
         headerScrollThreshold: 50
+    },
+    slideshow: {
+        cooldown: 1500   // 1.5 seconds between transitions
     }
 };
 
@@ -38,15 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
         animateServiceTags();
     }, CONFIG.animation.loaderFadeDelay);
 
-    // ── Make the featured card visible immediately ──────────────────
-    // The base .portfolio-item starts at opacity:0 so the JS observer
-    // can animate cards in. The featured card overrides this in CSS
-    // with !important, but we also add .visible here as a belt-and-
-    // braces guarantee so no code path can leave it invisible.
-    const featured = document.querySelector('.portfolio-item--featured');
-    if (featured) {
-        featured.classList.add('visible');
-    }
+    // Initialise the slideshow once the DOM is ready
+    initSlideshow();
 });
 
 // ==================== SERVICE TAGS ANIMATION ====================
@@ -97,7 +94,6 @@ mobileNavLinks.forEach(link => link.addEventListener('click', closeMobileNav));
 // ==================== SCROLL ANIMATIONS ====================
 const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
 
-// Section observer
 const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -110,45 +106,157 @@ document.querySelectorAll('.section').forEach(section => {
     sectionObserver.observe(section);
 });
 
-// Portfolio items — staggered fade-in
-// The featured card already has .visible (added above) so adding it
-// again here is harmless; it just won't re-trigger the transition.
-const portfolioObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            setTimeout(() => {
-                entry.target.classList.add('visible');
-            }, index * 100);
+// ==================== SLIDESHOW ====================
+function initSlideshow() {
+    const slides       = document.querySelectorAll('.slideshow-slide');
+    const dotsContainer = document.getElementById('slideshowDots');
+    const prevBtn      = document.getElementById('slideshowPrev');
+    const nextBtn      = document.getElementById('slideshowNext');
+    const progressBar  = document.getElementById('slideshowProgressBar');
+
+    if (!slides.length) return;
+
+    let currentIndex = 0;
+    let isTransitioning = false;
+    let autoTimer = null;
+    let progressTimer = null;
+
+    // ── Build dot indicators ──
+    slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.classList.add('slideshow-dot');
+        if (i === 0) dot.classList.add('active');
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        dot.addEventListener('click', () => goToSlide(i));
+        dotsContainer.appendChild(dot);
+    });
+
+    const dots = dotsContainer.querySelectorAll('.slideshow-dot');
+
+    // ── Navigate to a specific slide ──
+    function goToSlide(nextIndex) {
+        if (isTransitioning || nextIndex === currentIndex) return;
+        isTransitioning = true;
+
+        // Mark outgoing slide
+        const outgoing = slides[currentIndex];
+        outgoing.classList.remove('active');
+        outgoing.classList.add('exiting');
+
+        // Mark incoming slide
+        const incoming = slides[nextIndex];
+        incoming.classList.add('active');
+
+        // Update dots
+        dots[currentIndex].classList.remove('active');
+        dots[nextIndex].classList.add('active');
+
+        currentIndex = nextIndex;
+
+        // Clean up exiting class after transition ends
+        setTimeout(() => {
+            outgoing.classList.remove('exiting');
+            isTransitioning = false;
+        }, 800); // matches CSS transition duration
+
+        // Restart auto-advance timer
+        resetAutoAdvance();
+    }
+
+    function nextSlide() {
+        goToSlide((currentIndex + 1) % slides.length);
+    }
+
+    function prevSlide() {
+        goToSlide((currentIndex - 1 + slides.length) % slides.length);
+    }
+
+    // ── Progress bar + auto-advance ──
+    function startProgressBar() {
+        // Reset bar instantly
+        progressBar.classList.remove('animating');
+        progressBar.style.width = '0%';
+
+        // Force reflow so the reset takes effect before we animate
+        void progressBar.offsetWidth;
+
+        // Animate to 100% over the cooldown duration
+        progressBar.classList.add('animating');
+        // The CSS transition-duration for .animating is 1.5s (matches cooldown)
+    }
+
+    function resetAutoAdvance() {
+        clearTimeout(autoTimer);
+        startProgressBar();
+        autoTimer = setTimeout(() => {
+            nextSlide();
+        }, CONFIG.slideshow.cooldown);
+    }
+
+    // ── Button listeners ──
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    // ── Keyboard support ──
+    document.addEventListener('keydown', (e) => {
+        // Only respond if the slideshow section is roughly in view
+        const rect = document.getElementById('slideshow').getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (!inView) return;
+
+        if (e.key === 'ArrowLeft') prevSlide();
+        if (e.key === 'ArrowRight') nextSlide();
+    });
+
+    // ── Touch / swipe support ──
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const viewport = document.querySelector('.slideshow-viewport');
+
+    viewport.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+            diff > 0 ? nextSlide() : prevSlide();
         }
-    });
-}, { threshold: 0.1 });
+    }, { passive: true });
 
-document.querySelectorAll('.portfolio-item').forEach((item, index) => {
-    item.style.transitionDelay = `${index * 0.1}s`;
-    portfolioObserver.observe(item);
-});
-
-// ── Fallback: if the observer hasn't fired after 4 s (e.g. JS disabled
-//    scrolling quirks), force all portfolio items visible ──────────────
-setTimeout(() => {
-    document.querySelectorAll('.portfolio-item').forEach(item => {
-        item.classList.add('visible');
+    // ── Pause on hover (optional nicety) ──
+    const slideshowEl = document.getElementById('slideshow');
+    slideshowEl.addEventListener('mouseenter', () => {
+        clearTimeout(autoTimer);
+        progressBar.classList.remove('animating');
+        // Freeze bar at current visual width
+        const computed = getComputedStyle(progressBar).width;
+        progressBar.style.width = computed;
     });
-}, 4000);
+
+    slideshowEl.addEventListener('mouseleave', () => {
+        resetAutoAdvance();
+    });
+
+    // ── Lightbox on slide click ──
+    slides.forEach(slide => {
+        slide.addEventListener('click', () => {
+            const imgSrc = slide.querySelector('img').src;
+            lightboxImg.src = imgSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    // ── Start auto-advance ──
+    resetAutoAdvance();
+}
 
 // ==================== LIGHTBOX ====================
 const lightbox      = document.getElementById('lightbox');
 const lightboxImg   = document.getElementById('lightboxImg');
 const lightboxClose = document.getElementById('lightboxClose');
-
-document.querySelectorAll('.portfolio-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const imgSrc = item.querySelector('img').src;
-        lightboxImg.src = imgSrc;
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    });
-});
 
 function closeLightbox() {
     lightbox.classList.remove('active');
