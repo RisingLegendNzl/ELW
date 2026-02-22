@@ -286,7 +286,6 @@ body {
     max-width: 480px;
     height: auto;
     object-fit: contain;
-    /* White logo on dark bg — no filter needed for the new logo */
 }
 
 .hero-subtitle {
@@ -446,7 +445,7 @@ body {
     line-height: 1.2;
 }
 
-/* ==================== PORTFOLIO / OUR WORK SECTION ==================== */
+/* ==================== PORTFOLIO / SLIDESHOW SECTION ==================== */
 .portfolio {
     background: var(--color-charcoal);
     padding: 6rem 2rem;
@@ -455,108 +454,191 @@ body {
 .portfolio .section-label { color: var(--color-sage); }
 .portfolio .section-title { color: var(--color-cream); }
 
-/* 3-column grid on desktop */
-.portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-}
-
-/* ==================== BASE PORTFOLIO CARD ==================== */
-.portfolio-item {
+/* ── Slideshow Container ── */
+.slideshow {
     position: relative;
-    border-radius: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 16px;
     overflow: hidden;
-    aspect-ratio: 4/3;
-    cursor: pointer;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.slideshow-viewport {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-charcoal);
+}
+
+/* ── Slide Track (stacks all slides) ── */
+.slideshow-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* ── Individual Slide ── */
+.slideshow-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    transition: opacity 0.6s var(--transition-smooth),
-                transform 0.6s var(--transition-smooth);
+    transform: scale(1.04);
+    transition: opacity 0.8s var(--transition-smooth),
+                transform 0.8s var(--transition-smooth);
+    will-change: opacity, transform;
+    pointer-events: none;
 }
 
-.portfolio-item.visible {
+.slideshow-slide.active {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: scale(1);
+    pointer-events: auto;
+    z-index: 2;
 }
 
-/* Portrait ratio for every other standard card */
-.portfolio-item:not(.portfolio-item--featured):nth-child(even) {
-    aspect-ratio: 3/4;
+.slideshow-slide.exiting {
+    opacity: 0;
+    transform: scale(0.97);
+    z-index: 1;
 }
 
-.portfolio-item img {
+.slideshow-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s var(--transition-smooth);
+    display: block;
 }
 
-.portfolio-item:hover img { transform: scale(1.08); }
-
-.portfolio-overlay {
+/* ── Slide Overlay ── */
+.slideshow-overlay {
     position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 2rem 1.5rem 1.5rem;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-    opacity: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 3rem 2rem 2rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
     transform: translateY(10px);
-    transition: opacity 0.4s, transform 0.4s;
+    opacity: 0;
+    transition: opacity 0.5s 0.3s var(--transition-smooth),
+                transform 0.5s 0.3s var(--transition-smooth);
 }
 
-.portfolio-item:hover .portfolio-overlay {
+.slideshow-slide.active .slideshow-overlay {
     opacity: 1;
     transform: translateY(0);
 }
 
-.portfolio-overlay h3 {
+.slideshow-overlay h3 {
     color: var(--color-cream);
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
     font-weight: 500;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
 }
 
-.portfolio-overlay p {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.85rem;
+.slideshow-overlay p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
 }
 
-/* ==================== FEATURED CARD (IMG_1284) ==================== */
-.portfolio-item--featured {
-    grid-column: 1 / -1;
-    aspect-ratio: 16 / 7;
-    opacity: 1 !important;
-    transform: none !important;
-    transition: box-shadow 0.3s var(--transition-smooth);
+/* ── Navigation Arrows ── */
+.slideshow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    opacity: 0;
 }
 
-.portfolio-item--featured:hover {
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+.slideshow:hover .slideshow-btn {
+    opacity: 1;
 }
 
-/* ── Tablet (≤ 900 px): 2-col grid ── */
-@media (max-width: 900px) {
-    .portfolio-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .portfolio-item--featured {
-        grid-column: 1 / -1;
-        aspect-ratio: 16 / 9;
-    }
+.slideshow-btn:hover {
+    background: rgba(0, 0, 0, 0.55);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-50%) scale(1.08);
 }
 
-/* ── Mobile (≤ 640 px): single column ── */
-@media (max-width: 640px) {
-    .portfolio-grid {
-        grid-template-columns: 1fr;
-    }
+.slideshow-btn svg {
+    width: 22px;
+    height: 22px;
+    color: var(--color-cream);
+}
 
-    .portfolio-item--featured {
-        grid-column: 1 / -1;
-        aspect-ratio: 4 / 3;
-    }
+.slideshow-btn--prev { left: 1rem; }
+.slideshow-btn--next { right: 1rem; }
+
+/* ── Dot Indicators ── */
+.slideshow-dots {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.slideshow-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    padding: 0;
+}
+
+.slideshow-dot:hover {
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+}
+
+.slideshow-dot.active {
+    background: var(--color-cream);
+    border-color: var(--color-cream);
+    transform: scale(1.15);
+}
+
+/* ── Progress Bar ── */
+.slideshow-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.15);
+    z-index: 10;
+}
+
+.slideshow-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--color-sage);
+    transition: width 0.1s linear;
+}
+
+.slideshow-progress-bar.animating {
+    transition: width 1.5s linear;
+    width: 100%;
 }
 
 /* ==================== ABOUT SECTION ==================== */
@@ -953,10 +1035,25 @@ body {
         padding: 0.5rem 1.1rem;
     }
 
-    /* Standard (non-featured) cards: all landscape on mobile */
-    .portfolio-item:not(.portfolio-item--featured),
-    .portfolio-item:not(.portfolio-item--featured):nth-child(even) {
-        aspect-ratio: 4/3;
+    .slideshow-viewport {
+        aspect-ratio: 4 / 3;
+    }
+
+    .slideshow-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .slideshow-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .slideshow-btn--prev { left: 0.5rem; }
+    .slideshow-btn--next { right: 0.5rem; }
+
+    .slideshow-overlay {
+        padding: 2rem 1.25rem 1.25rem;
     }
 
     .about-features { grid-template-columns: 1fr; }
