@@ -1,3 +1,4 @@
+
 /* ==================== CSS VARIABLES ==================== */
 :root {
     --color-forest: #1a3c34;
@@ -274,8 +275,6 @@ body {
 
 /* ==================== HERO BRAND IMAGE ==================== */
 .hero-brand-image-wrap {
-    display: block;
-    width: 100%;
     margin-bottom: 1.5rem;
     opacity: 0;
     transform: translateY(30px);
@@ -285,10 +284,9 @@ body {
 .hero-brand-image {
     display: block;
     width: 100%;
+    max-width: 480px;
     height: auto;
-    max-width: 100%;
     object-fit: contain;
-    object-position: left center;
 }
 
 .hero-subtitle {
@@ -896,6 +894,7 @@ body {
     .contact-content { grid-template-columns: 1fr; }
 
     .header-logo-img { height: 44px; }
+    .hero-brand-image { max-width: 420px; }
 
     .gallery-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -935,6 +934,7 @@ body {
     .logo-animation.expanded .word-gap { width: 0.3em; }
 
     .header-logo-img  { height: 36px; max-width: 130px; }
+    .hero-brand-image { max-width: 100%; }
 }
 
 @media (max-width: 360px) {
