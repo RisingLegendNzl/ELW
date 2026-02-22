@@ -254,7 +254,7 @@ body {
             rgba(45, 90, 79, 0.72) 50%,
             rgba(107, 143, 113, 0.68) 100%
         ),
-        url("../hero-bg.png") center center / cover no-repeat;
+        url("hero-bg.png") center center / cover no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: center;
