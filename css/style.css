@@ -1,4 +1,3 @@
-
 /* ==================== CSS VARIABLES ==================== */
 :root {
     --color-forest: #1a3c34;
@@ -177,16 +176,22 @@ body {
     transform: translateY(-1px);
 }
 
+/*
+ * Header logo — square PNG with white background.
+ * We size by height and let width scale naturally (it's ~1:1 square).
+ * A modest border-radius softens the white square against dark/light headers.
+ */
 .header-logo-img {
-    height: 52px;
+    height: 56px;
     width: auto;
-    max-width: 180px;
+    max-width: 160px;
     object-fit: contain;
     display: block;
+    border-radius: 8px;
     transition: height 0.3s;
 }
 
-.header.scrolled .header-logo-img { height: 44px; }
+.header.scrolled .header-logo-img { height: 46px; }
 
 /* ==================== HEADER NAV ==================== */
 .header-nav {
@@ -286,17 +291,23 @@ body {
     opacity: 0;
     transform: translateY(30px);
     animation: fadeInUp 1s var(--transition-smooth) 2.5s forwards;
-    /* CENTER the image */
     display: flex;
     justify-content: center;
 }
 
+/*
+ * Hero logo — the new PNG is square (~1024×1024).
+ * We cap it at 260px so it reads as a clean logo mark, not a giant image.
+ * border-radius adds a subtle polish against the hero overlay.
+ */
 .hero-brand-image {
     display: block;
-    width: 100%;
-    max-width: 480px;
+    width: auto;
     height: auto;
+    max-width: 260px;
+    max-height: 260px;
     object-fit: contain;
+    border-radius: 12px;
 }
 
 .hero-subtitle {
@@ -368,7 +379,7 @@ body {
     color: var(--color-cream);
     padding: 0.6rem 1.2rem;
     border-radius: 50px;
-    font-size: 1rem;        /* enlarged from 0.85rem */
+    font-size: 1rem;
     font-weight: 400;
     opacity: 0;
     transform: translateY(20px) scale(0.9);
@@ -912,8 +923,8 @@ body {
 
     .contact-content { grid-template-columns: 1fr; }
 
-    .header-logo-img { height: 44px; }
-    .hero-brand-image { max-width: 420px; }
+    .header-logo-img { height: 46px; }
+    .hero-brand-image { max-width: 220px; max-height: 220px; }
 
     .gallery-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -934,6 +945,8 @@ body {
         font-size: 0.95rem;
         padding: 0.5rem 1.1rem;
     }
+
+    .hero-brand-image { max-width: 180px; max-height: 180px; border-radius: 10px; }
 
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -957,14 +970,13 @@ body {
     }
     .logo-animation.expanded .word-gap { width: 0.3em; }
 
-    .header-logo-img  { height: 36px; max-width: 130px; }
-    .hero-brand-image { max-width: 100%; }
-
-    .service-tag { font-size: 0.95rem; }
+    .header-logo-img  { height: 38px; max-width: 120px; }
 }
 
 @media (max-width: 360px) {
-    .header-logo-img { height: 30px; max-width: 110px; }
+    .header-logo-img { height: 32px; max-width: 100px; }
+
+    .hero-brand-image { max-width: 150px; max-height: 150px; }
 
     .gallery-grid {
         grid-template-columns: 1fr 1fr;
