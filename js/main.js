@@ -6,7 +6,7 @@
  * - Logo animation (ELW → Element Landscaping Waikato)
  * - Header scroll effects
  * - Mobile navigation
- * - Portfolio slideshow (auto-advance with 1.5s cooldown)
+ * - Gallery grid with staggered reveal
  * - Lightbox
  * - Section scroll animations
  * - Form handling (SendGrid via /api/sendQuote)
@@ -22,9 +22,6 @@ const CONFIG = {
     },
     scroll: {
         headerScrollThreshold: 50
-    },
-    slideshow: {
-        cooldown: 1500   // 1.5 seconds between transitions
     }
 };
 
@@ -42,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
         animateServiceTags();
     }, CONFIG.animation.loaderFadeDelay);
 
-    // Initialise the slideshow once the DOM is ready
-    initSlideshow();
+    // Initialise gallery reveal
+    initGalleryReveal();
 });
 
 // ==================== SERVICE TAGS ANIMATION ====================
@@ -106,151 +103,39 @@ document.querySelectorAll('.section').forEach(section => {
     sectionObserver.observe(section);
 });
 
-// ==================== SLIDESHOW ====================
-function initSlideshow() {
-    const slides       = document.querySelectorAll('.slideshow-slide');
-    const dotsContainer = document.getElementById('slideshowDots');
-    const prevBtn      = document.getElementById('slideshowPrev');
-    const nextBtn      = document.getElementById('slideshowNext');
-    const progressBar  = document.getElementById('slideshowProgressBar');
+// ==================== GALLERY GRID REVEAL ====================
+function initGalleryReveal() {
+    const items = document.querySelectorAll('.gallery-item');
+    if (!items.length) return;
 
-    if (!slides.length) return;
+    const galleryObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Stagger the reveal based on visible order
+                const item = entry.target;
+                const index = parseInt(item.dataset.revealIndex || '0', 10);
+                setTimeout(() => {
+                    item.classList.add('revealed');
+                }, index * 60);
+                galleryObserver.unobserve(item);
+            }
+        });
+    }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.05 });
 
-    let currentIndex = 0;
-    let isTransitioning = false;
-    let autoTimer = null;
-    let progressTimer = null;
-
-    // ── Build dot indicators ──
-    slides.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.classList.add('slideshow-dot');
-        if (i === 0) dot.classList.add('active');
-        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-        dot.addEventListener('click', () => goToSlide(i));
-        dotsContainer.appendChild(dot);
+    items.forEach((item, i) => {
+        item.dataset.revealIndex = i;
+        galleryObserver.observe(item);
     });
 
-    const dots = dotsContainer.querySelectorAll('.slideshow-dot');
-
-    // ── Navigate to a specific slide ──
-    function goToSlide(nextIndex) {
-        if (isTransitioning || nextIndex === currentIndex) return;
-        isTransitioning = true;
-
-        // Mark outgoing slide
-        const outgoing = slides[currentIndex];
-        outgoing.classList.remove('active');
-        outgoing.classList.add('exiting');
-
-        // Mark incoming slide
-        const incoming = slides[nextIndex];
-        incoming.classList.add('active');
-
-        // Update dots
-        dots[currentIndex].classList.remove('active');
-        dots[nextIndex].classList.add('active');
-
-        currentIndex = nextIndex;
-
-        // Clean up exiting class after transition ends
-        setTimeout(() => {
-            outgoing.classList.remove('exiting');
-            isTransitioning = false;
-        }, 800); // matches CSS transition duration
-
-        // Restart auto-advance timer
-        resetAutoAdvance();
-    }
-
-    function nextSlide() {
-        goToSlide((currentIndex + 1) % slides.length);
-    }
-
-    function prevSlide() {
-        goToSlide((currentIndex - 1 + slides.length) % slides.length);
-    }
-
-    // ── Progress bar + auto-advance ──
-    function startProgressBar() {
-        // Reset bar instantly
-        progressBar.classList.remove('animating');
-        progressBar.style.width = '0%';
-
-        // Force reflow so the reset takes effect before we animate
-        void progressBar.offsetWidth;
-
-        // Animate to 100% over the cooldown duration
-        progressBar.classList.add('animating');
-        // The CSS transition-duration for .animating is 1.5s (matches cooldown)
-    }
-
-    function resetAutoAdvance() {
-        clearTimeout(autoTimer);
-        startProgressBar();
-        autoTimer = setTimeout(() => {
-            nextSlide();
-        }, CONFIG.slideshow.cooldown);
-    }
-
-    // ── Button listeners ──
-    prevBtn.addEventListener('click', prevSlide);
-    nextBtn.addEventListener('click', nextSlide);
-
-    // ── Keyboard support ──
-    document.addEventListener('keydown', (e) => {
-        // Only respond if the slideshow section is roughly in view
-        const rect = document.getElementById('slideshow').getBoundingClientRect();
-        const inView = rect.top < window.innerHeight && rect.bottom > 0;
-        if (!inView) return;
-
-        if (e.key === 'ArrowLeft') prevSlide();
-        if (e.key === 'ArrowRight') nextSlide();
-    });
-
-    // ── Touch / swipe support ──
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const viewport = document.querySelector('.slideshow-viewport');
-
-    viewport.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    viewport.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        const diff = touchStartX - touchEndX;
-        if (Math.abs(diff) > 50) {
-            diff > 0 ? nextSlide() : prevSlide();
-        }
-    }, { passive: true });
-
-    // ── Pause on hover (optional nicety) ──
-    const slideshowEl = document.getElementById('slideshow');
-    slideshowEl.addEventListener('mouseenter', () => {
-        clearTimeout(autoTimer);
-        progressBar.classList.remove('animating');
-        // Freeze bar at current visual width
-        const computed = getComputedStyle(progressBar).width;
-        progressBar.style.width = computed;
-    });
-
-    slideshowEl.addEventListener('mouseleave', () => {
-        resetAutoAdvance();
-    });
-
-    // ── Lightbox on slide click ──
-    slides.forEach(slide => {
-        slide.addEventListener('click', () => {
-            const imgSrc = slide.querySelector('img').src;
+    // ── Lightbox on gallery item click ──
+    items.forEach(item => {
+        item.addEventListener('click', () => {
+            const imgSrc = item.querySelector('img').src;
             lightboxImg.src = imgSrc;
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
     });
-
-    // ── Start auto-advance ──
-    resetAutoAdvance();
 }
 
 // ==================== LIGHTBOX ====================
