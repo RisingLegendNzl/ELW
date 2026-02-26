@@ -960,13 +960,15 @@ body {
     .logo-animation.expanded .word-gap { width: 0.3em; }
 
     .header-logo-img  { height: 36px; max-width: 130px; }
-    .hero-brand-image { max-width: 100%; }
+    .hero-brand-image { max-width: 90%; transform: scale(1.15); }
 
     .service-tag { font-size: 0.95rem; }
 }
 
 @media (max-width: 360px) {
     .header-logo-img { height: 30px; max-width: 110px; }
+
+    .hero-brand-image { max-width: 85%; transform: scale(1.1); }
 
     .gallery-grid {
         grid-template-columns: 1fr 1fr;
