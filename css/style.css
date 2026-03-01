@@ -187,6 +187,26 @@ body {
 
 .header.scrolled .header-logo-img { height: 44px; }
 
+/* ==================== HEADER LOCATION ==================== */
+.header-location {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: rgba(245, 242, 236, 0.75);
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.3s;
+}
+
+.header.scrolled .header-location {
+    color: var(--color-sage);
+}
+
+@media (max-width: 968px) {
+    .header-location { display: none; }
+}
+
 /* ==================== HEADER NAV ==================== */
 .header-nav {
     display: flex;
@@ -304,12 +324,26 @@ body {
 .hero-subtitle {
     font-size: clamp(1rem, 2.5vw, 1.4rem);
     color: var(--color-cream);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     font-weight: 300;
     letter-spacing: 0.05em;
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInUp 1s var(--transition-smooth) 2.7s forwards;
+}
+
+/* ==================== HERO FREE QUOTE HEADING ==================== */
+.hero-free-quote {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 500;
+    color: var(--color-cream);
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s var(--transition-smooth) 2.8s forwards;
 }
 
 /* ==================== HERO CONTACT ROW ==================== */
@@ -937,6 +971,10 @@ body {
         padding: 0.5rem 1.1rem;
     }
 
+    .hero-free-quote {
+        font-size: clamp(1.3rem, 5vw, 2rem);
+    }
+
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
@@ -960,15 +998,13 @@ body {
     .logo-animation.expanded .word-gap { width: 0.3em; }
 
     .header-logo-img  { height: 36px; max-width: 130px; }
-    .hero-brand-image { max-width: 90%; transform: scale(1.15); }
+    .hero-brand-image { max-width: 100%; }
 
     .service-tag { font-size: 0.95rem; }
 }
 
 @media (max-width: 360px) {
     .header-logo-img { height: 30px; max-width: 110px; }
-
-    .hero-brand-image { max-width: 85%; transform: scale(1.1); }
 
     .gallery-grid {
         grid-template-columns: 1fr 1fr;
