@@ -949,7 +949,10 @@ body {
     .contact-content { grid-template-columns: 1fr; }
 
     .header-logo-img { height: 44px; }
-    .hero-brand-image { max-width: 420px; }
+    .hero-brand-image {
+        max-width: 420px;
+        transform: scale(1.15); /* reduced from 1.35 to prevent edge clipping on tablet */
+    }
 
     .gallery-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -973,6 +976,11 @@ body {
 
     .hero-free-quote {
         font-size: clamp(1.3rem, 5vw, 2rem);
+    }
+
+    .hero-brand-image {
+        max-width: 100%;
+        transform: scale(1.05); /* further reduced to keep full logo visible on small phones */
     }
 
     .gallery-grid {
@@ -1005,6 +1013,10 @@ body {
 
 @media (max-width: 360px) {
     .header-logo-img { height: 30px; max-width: 110px; }
+
+    .hero-brand-image {
+        transform: scale(1.0); /* no upscale at very small sizes — fits within viewport */
+    }
 
     .gallery-grid {
         grid-template-columns: 1fr 1fr;
