@@ -127,12 +127,12 @@
                     </svg>
                     022 109 8684
                 </a>
-                <a href="/cdn-cgi/l/email-protection#66030a030b0308120a0708021505071603081c26010b070f0a4805090b" class="hero-phone">
+                <a href="mailto:elementlandscapenz@gmail.com" class="hero-phone">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                         <polyline points="22,6 12,13 2,6"></polyline>
                     </svg>
-                    <span class="__cf_email__" data-cfemail="a5c0c9c0c8c0cbd1c9c4cbc1d6c6c4d5c0cbdfe5c2c8c4ccc98bc6cac8">[email&#160;protected]</span>
+                    elementlandscapenz@gmail.com
                 </a>
             </div>
             <div class="services-list" id="servicesList">
@@ -434,4 +434,27 @@
                 <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
         </button>
-        <div class="lightbox-c
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="Gallery image enlarged">
+        </div>
+    </div>
+
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+
+    <!-- Loader failsafe: guarantees the loader is dismissed once the page
+         has fully loaded, regardless of any JS errors in main.js -->
+    <script>
+        window.addEventListener("load", function () {
+            var loader = document.getElementById("loader");
+            if (loader) {
+                loader.style.opacity = "0";
+                loader.style.pointerEvents = "none";
+                setTimeout(function () {
+                    loader.style.display = "none";
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
