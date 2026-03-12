@@ -273,7 +273,7 @@ body {
             rgba(45, 90, 79, 0.72) 50%,
             rgba(107, 143, 113, 0.68) 100%
         ),
-        url("hero-bg.png") center center / cover no-repeat;
+        url("../images/IMG_1600.jpeg") center center / cover no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -305,7 +305,6 @@ body {
     opacity: 0;
     transform: translateY(30px);
     animation: fadeInUp 1s var(--transition-smooth) 2.5s forwards;
-    /* CENTER the image */
     display: flex;
     justify-content: center;
     overflow: hidden;
@@ -404,7 +403,7 @@ body {
     color: var(--color-cream);
     padding: 0.6rem 1.2rem;
     border-radius: 50px;
-    font-size: 1rem;        /* enlarged from 0.85rem */
+    font-size: 1rem;
     font-weight: 400;
     opacity: 0;
     transform: translateY(20px) scale(0.9);
@@ -554,7 +553,6 @@ body {
     opacity: 1;
 }
 
-/* Stagger reveal animation for gallery items */
 .gallery-item {
     opacity: 0;
     transform: translateY(20px);
@@ -951,7 +949,7 @@ body {
     .header-logo-img { height: 44px; }
     .hero-brand-image {
         max-width: 420px;
-        transform: scale(1.15); /* reduced from 1.35 to prevent edge clipping on tablet */
+        transform: scale(1.15);
     }
 
     .gallery-grid {
@@ -980,7 +978,7 @@ body {
 
     .hero-brand-image {
         max-width: 100%;
-        transform: scale(1.05); /* further reduced to keep full logo visible on small phones */
+        transform: scale(1.05);
     }
 
     .gallery-grid {
@@ -1015,7 +1013,7 @@ body {
     .header-logo-img { height: 30px; max-width: 110px; }
 
     .hero-brand-image {
-        transform: scale(1.0); /* no upscale at very small sizes — fits within viewport */
+        transform: scale(1.0);
     }
 
     .gallery-grid {
